@@ -305,9 +305,9 @@ img { display: block; max-width: none; }
 .sd-item .hl { display: flex; align-items: center; gap: 8px; }
 .sd-item .hl img { width: 32px; height: 32px; flex: none; }
 .sd-item h3 { margin: 0; font-weight: 600; font-size: 16px; line-height: 21px; }
-.sd-item .body, .sd-item li { font-size: 16px; line-height: 21px; color: var(--dark-gray); }
-.sd-item ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px; }
-.sd-item .opt b { font-weight: 600; color: var(--deep-black); }
+.sd-item .body { font-size: 16px; line-height: 21px; color: var(--dark-gray); }
+.sd-item .opts { display: flex; flex-direction: column; gap: 21px; }
+.sd-item .opt-name { font-size: 16px; line-height: 21px; color: var(--deep-black); }
 .sd-foot { position: relative; flex: none; height: 34px; background: var(--white); }
 @media (max-width: 500px) {
   .sd-foot { height: env(safe-area-inset-bottom, 0px); }
@@ -890,11 +890,11 @@ img { display: block; max-width: none; }
       badges: ['Wash', 'Tumble-dry', 'Folded', 'In a bag'],
       items: [
         ['overview', 'Service overview', "Your items are machine washed at 30°C and tumble dried. 60°C can be requested. No ironing is included. We price your order based on how much it weighs - no need to worry if it's slightly over."],
-        ['overview', 'Service options', { options: [['Mixed wash', 'We will wash & tumble dry your laundry as you send it, all colours together.'], ['Separate wash', 'We will separate your laundry into 2 loads, lights and dark-coloured, and wash each load separately to minimize the risk of a colour run.']] }],
+        ['suitable', 'Service options', { options: [['Mixed wash', 'We will wash & tumble dry your laundry as you send it, all colours together.'], ['Separate wash', 'We will separate your laundry into 2 loads, lights and dark-coloured, and wash each load separately to minimize the risk of a colour run.']] }],
         ['suitable', 'Suitable for', 'Everyday laundry that can be machine washed and tumble dried. Some popular items typically included are t-shirts, trousers, bedsheets and undergarments.'],
         ['exclude', 'Do not include', { list: ['Laundry that is not suitable for machine washing and/or tumble drying', 'Dry-clean only items', 'Bath mats', 'Duvets and bulky items', 'Any type of shoes', 'Pet beds/items', 'Inflammable items, including very greased cloths'] }],
         ['prepare', 'How to prepare for collection', 'Please check your pockets and remove all items. If you are booking multiple services, please prepare all items for the Wash service in a separate bag. Your Laundryheap driver will tag the bag with the required service.'],
-        ['return', 'How you’ll receive the items back', 'We will return your clean laundry neatly packed, in a bag.']
+        ['bag', 'How you’ll receive the items back', 'We will return your clean laundry neatly packed, in a bag.']
       ] },
     wi: { title: 'Wash & Iron', bg: '#fbb4c2', icon: 'svc-wi.svg', blurb: 'For everyday laundry that requires ironing.',
       badges: ['Wash', 'Tumble-dry', 'Ironing', 'On hangers'],
@@ -930,7 +930,7 @@ img { display: block; max-width: none; }
         ['suitable', 'Suitable for', 'Large items that cannot be cleaned in a regular wash and require special care. Some of the popular items that are typically included are duvets, pillows and blankets.'],
         ['exclude', 'Do not include', 'Sheets, duvet covers, pillow cases and towels. You can select a Wash service for these.'],
         ['prepare', 'How to prepare for collection', 'If you are booking multiple services, please prepare all items for the Duvets & Bulky service in a separate bag. No need to list all items, we’ll take care of that.'],
-        ['return', 'How you’ll receive the items back', 'We will return your clean items in a bag.']
+        ['bag', 'How you’ll receive the items back', 'We will return your clean items in a bag.']
       ] }
   };
   (function () {
@@ -939,8 +939,8 @@ img { display: block; max-width: none; }
     var esc = function (t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; };
     function body(b) {
       if (typeof b === 'string') return '<p class="body">' + esc(b) + '</p>';
-      if (b.list) return '<ul>' + b.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
-      return '<ul>' + b.options.map(function (o) { return '<li class="opt"><b>' + esc(o[0]) + ':</b> ' + esc(o[1]) + '</li>'; }).join('') + '</ul>';
+      if (b.list) return '<div class="lines">' + b.list.map(function (x) { return '<p class="body">' + esc(x) + '</p>'; }).join('') + '</div>';
+      return '<div class="opts">' + b.options.map(function (o) { return '<div><p class="opt-name">' + esc(o[0]) + '</p><p class="body">' + esc(o[1]) + '</p></div>'; }).join('') + '</div>';
     }
     function render(key) {
       var d = SERVICE_DETAILS[key];
