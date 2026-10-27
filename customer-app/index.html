@@ -468,7 +468,7 @@ img { display: block; max-width: none; }
           <button class="pill" role="tab" type="button" aria-selected="false" data-tab="1">Wash &amp; Iron</button>
           <button class="pill" role="tab" type="button" aria-selected="false" data-tab="2">Dry cleaning</button>
           <button class="pill" role="tab" type="button" aria-selected="false" data-tab="3">Ironing only</button>
-          <button class="pill" role="tab" type="button" aria-selected="false" aria-disabled="true" data-tab="4">Duvets &amp; bulky items</button>
+          <button class="pill" role="tab" type="button" aria-selected="false" data-tab="4">Duvets &amp; bulky items</button>
         </div>
 
         <div class="pager">
@@ -539,7 +539,17 @@ img { display: block; max-width: none; }
             <div class="subtabs-wrap"><div class="subtabs" id="ir-subtabs"></div></div>
             <div class="listing" id="ir-list"></div>
           </div>
-          <!-- Duvets & bulky items is blocked for this test: its pill shows but does nothing, and swiping stops at Ironing only -->
+          <!-- Duvets & bulky items — same layout as Dry cleaning. Items rendered from DUVETS below -->
+          <div class="panel" role="tabpanel">
+            <div class="svc-callout">
+              <div>
+                <p>For larger items that require extra care.</p>
+                <p class="link">Learn more</p>
+              </div>
+            </div>
+            <div class="subtabs-wrap"><div class="subtabs" id="du-subtabs"></div></div>
+            <div class="listing" id="du-list"></div>
+          </div>
         </div>
 
       <div class="cta-bar">
@@ -880,6 +890,16 @@ img { display: block; max-width: none; }
     ['Kitchen items', [['Tablecloth (up to 2m)', '£7.95'], ['Tablecloth (up to 4m)', '£20.00'], ['Apron', '£1.95'], ['Tea Towel', '£1.45']]]
   ];
 
+  // Duvets & bulky items price list — laundryheap.com/en-gb/pricing/duvets-bulky-items/pricelist (checked 27 Oct 2026)
+  var DUVETS = [
+    ['Feather duvets', [['Feather Duvet - Single', '£22.50'], ['Feather Duvet - Double', '£29.50'], ['Feather Duvet - King', '£30.95'], ['Feather Duvet - Super King', '£34.50']]],
+    ['Synthetic duvets', [['Synthetic Duvet - Single', '£21.50'], ['Synthetic Duvet - Double', '£27.50'], ['Synthetic Duvet - King', '£28.50'], ['Synthetic Duvet - Super King', '£32.00']]],
+    ['Blankets & Bedspreads', [['Bedspread - Single - Washable', '£16.95'], ['Bedspread - Double - Washable', '£20.95'], ['Bedspread - King - Washable', '£22.95'], ['Blanket - Single - Washable', '£16.95'], ['Blanket - Double - Washable', '£20.95'], ['Blanket - King - Washable', '£22.95'], ['Throw - All sizes - Washable', '£20.95']]],
+    ['Pillows', [['Pillow - Feather', '£15.95'], ['Pillow - Synthetic', '£12.95']]],
+    ['Mattress protectors', [['Mattress Protector - Single', '£16.95'], ['Mattress Protector - Double', '£18.95'], ['Mattress Protector - King', '£20.95']]],
+    ['Mattress toppers', [['Mattress Topper - Single', '£30.00'], ['Mattress Topper - Double', '£40.00'], ['Mattress Topper - King', '£45.00'], ['Mattress Topper - Super King/Double Layer', '£50.00']]]
+  ];
+
   // Category list: sticky tab row that jumps to a section, with the underline following the scroll
   function categoryList(tabsEl, listEl, data) {
     var panel = listEl.closest('.panel');
@@ -929,6 +949,7 @@ img { display: block; max-width: none; }
   categoryList(document.getElementById('wi-subtabs'), document.getElementById('wi-list'), WASH_IRON);
   categoryList(document.getElementById('dc-subtabs'), document.getElementById('dc-list'), DRY_CLEANING);
   categoryList(document.getElementById('ir-subtabs'), document.getElementById('ir-list'), IRONING);
+  categoryList(document.getElementById('du-subtabs'), document.getElementById('du-list'), DUVETS);
 </script>
 </body>
 </html>
