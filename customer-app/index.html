@@ -196,6 +196,65 @@ img { display: block; max-width: none; }
   .nav-row { left: 0; right: 0; }
 }
 
+/* ---------- Prices screen ---------- */
+.titlebar { position: relative; flex: none; height: 44px; background: var(--white); }
+.titlebar h1 { margin: 0; position: absolute; left: 50%; top: 22.5px; transform: translate(-50%, -50%); font-weight: 600; font-size: 16px; line-height: 21px; white-space: nowrap; }
+.back { position: absolute; left: 2px; top: 0; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; background: none; cursor: pointer; }
+.back img { width: 24px; height: 24px; }
+.back:focus-visible { outline: 2px solid var(--light-blue); outline-offset: -4px; border-radius: 8px; }
+.screen-white { background: var(--white); }
+.pills { display: flex; gap: 16px; height: 72px; box-sizing: border-box; padding: 16px; overflow-x: auto; scrollbar-width: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+.pills::-webkit-scrollbar { display: none; }
+.pills.dragging { cursor: grabbing; }
+.pill { flex: none; display: flex; align-items: center; justify-content: center; padding: 12px 16px; border: 0; border-radius: 9999px; background: var(--bg-gray); color: var(--medium-gray); font: 700 14px/16px var(--font); white-space: nowrap; text-transform: uppercase; cursor: pointer; transition: background-color .2s, color .2s; }
+.pill[aria-selected="true"] { background: var(--light-blue); color: var(--white); }
+.pill:focus-visible { outline: 2px solid var(--dark-blue); outline-offset: 2px; }
+.pills, .subtabs { position: relative; }
+.pills { flex: none; }
+/* Each service panel scrolls vertically on its own; the pager swipes between them */
+.pager { flex: 1; min-height: 0; display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.pager::-webkit-scrollbar, .panel::-webkit-scrollbar, .subtabs::-webkit-scrollbar { display: none; }
+.pager.dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; -webkit-user-select: none; }
+.panel { position: relative; flex: 0 0 100%; min-width: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; overscroll-behavior-y: contain; scroll-snap-align: start; scroll-snap-stop: always; }
+.subtabs-wrap { position: sticky; top: 0; z-index: 1; background: var(--white); }
+.subtabs-wrap::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 53px; background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--white)); pointer-events: none; transition: opacity .2s; }
+.subtabs-wrap.at-end::after { opacity: 0; }
+.subtabs { display: flex; gap: 8px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+.subtabs.dragging { cursor: grabbing; }
+.subtab { flex: none; padding: 12px 12px 10px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--medium-gray); font: 400 14px/16px var(--font); white-space: nowrap; cursor: pointer; }
+.subtab[aria-current="true"] { border-bottom-color: var(--light-blue); color: var(--light-blue); font-weight: 700; }
+.subtab:focus-visible { outline: 2px solid var(--light-blue); outline-offset: -2px; border-radius: 4px; }
+.listing { padding-block: 8px; }
+.listing h2 { margin: 0; padding: 16px 16px 8px; font-weight: 700; font-size: 14px; line-height: 16px; }
+.listing .item { display: flex; align-items: center; gap: 8px; padding: 12px 16px; font-size: 14px; line-height: 16px; }
+.listing .item p:first-child { flex: 1; min-width: 0; }
+.listing .item p:last-child { flex: none; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.svc-callout { padding: 16px; }
+.svc-callout > div { display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: 8px; background: var(--highlight); font-size: 14px; line-height: 16px; }
+.svc-callout .link { font-weight: 700; color: var(--light-blue); }
+.price-list { display: flex; flex-direction: column; gap: 32px; padding: 16px; }
+.price-row { display: flex; gap: 16px; }
+.price-row .left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; font-size: 14px; line-height: 16px; }
+.price-row .desc { color: var(--medium-gray); }
+.price-row .amt { flex: none; font-size: 14px; line-height: 16px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.incremental { display: flex; flex-direction: column; justify-content: center; height: 165px; box-sizing: border-box; padding: 16px; }
+.more-card { display: flex; align-items: center; gap: 16px; padding: 16px; overflow: hidden; border-radius: 8px; background: #e3f7ff; }
+.more-card .left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 16px; }
+.more-card .h { font-weight: 700; }
+.more-card .s { color: var(--dark-gray); }
+.more-card .link { font-weight: 700; color: var(--light-blue); }
+.bag { position: relative; flex: none; width: 96px; height: 96px; }
+.bag img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.bag .c1 { width: 96px; height: 96px; }
+.bag .c2 { width: 75.24px; height: 75.24px; }
+.bag .photo { width: 80px; height: 80px; object-fit: cover; }
+.panel-todo { display: grid; place-items: center; min-height: 320px; padding: 24px; text-align: center; font-size: 14px; line-height: 20px; color: var(--dark-gray); }
+.cta-bar { position: relative; flex: none; padding: 16px 16px 50px; background: var(--white); }
+.cta-bar .home-indicator { left: calc(50% + 0.5px); width: 134px; }
+@media (max-width: 500px) {
+  .cta-bar { padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+}
+
 /* ---------- Placeholder (screens not designed yet) ---------- */
 .todo { flex: 1; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--bg-gray); }
 .todo h2 { margin: 0 0 8px; font-size: 24px; line-height: 26px; color: var(--dark-blue); }
@@ -362,13 +421,85 @@ img { display: block; max-width: none; }
       </div>
     </section>
 
-    <!-- ===== Screen: Prices — waiting on designs ===== -->
-    <section class="screen" data-screen="prices" hidden>
-      <div class="todo">
-        <div>
-          <h2>Prices</h2>
-          <p>This screen is coming soon.</p>
+    <!-- ===== Screen: Prices — Figma 129:2021 (Wash & Fold). Prices and descriptions from laundryheap.com/en-gb/pricing ===== -->
+    <section class="screen screen-white" data-screen="prices" data-nav="false" hidden>
+      <div class="titlebar">
+        <button class="back" type="button" data-back="home" aria-label="Back to home"><img src="assets/chevron-left.svg" alt=""></button>
+        <h1>Prices</h1>
+      </div>
+
+        <div class="pills" role="tablist" aria-label="Services">
+          <button class="pill" role="tab" type="button" aria-selected="true" data-tab="0">Wash &amp; Fold</button>
+          <button class="pill" role="tab" type="button" aria-selected="false" data-tab="1">Wash &amp; Iron</button>
+          <button class="pill" role="tab" type="button" aria-selected="false" data-tab="2">Dry cleaning</button>
+          <button class="pill" role="tab" type="button" aria-selected="false" data-tab="3">Ironing only</button>
+          <button class="pill" role="tab" type="button" aria-selected="false" data-tab="4">Duvets &amp; bulky items</button>
         </div>
+
+        <div class="pager">
+          <!-- Wash & Fold -->
+          <div class="panel" role="tabpanel">
+            <div class="svc-callout">
+              <div>
+                <p>For everyday laundry, bedsheets and towels.</p>
+                <p class="link">Learn more</p>
+              </div>
+            </div>
+            <div class="price-list">
+              <div class="price-row">
+                <div class="left"><p>Mixed Wash</p><p class="desc">All colours washed together.</p></div>
+                <p class="amt">£19.50 / 6kg</p>
+              </div>
+              <div class="price-row">
+                <div class="left"><p>Separate Wash</p><p class="desc">Light and dark clothes washed separately.</p></div>
+                <p class="amt">£39.00 / 12kg</p>
+              </div>
+            </div>
+            <div class="incremental">
+              <div class="more-card">
+                <div class="left">
+                  <p class="h">What if I have more?</p>
+                  <p class="s">You can send as much as you need. Each additional kg costs <b>£3.75.</b></p>
+                  <p class="link">See what 6kg looks like</p>
+                </div>
+                <div class="bag">
+                  <img class="c1" src="assets/prices-circle-outer.svg" alt="">
+                  <img class="c2" src="assets/prices-circle-inner.svg" alt="">
+                  <img class="photo" src="assets/prices-bag.png" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Next panels: replace each placeholder when its design arrives -->
+          <!-- Wash & Iron — same layout as Dry cleaning. Items rendered from WASH_IRON below -->
+          <div class="panel" role="tabpanel">
+            <div class="svc-callout">
+              <div>
+                <p>For everyday laundry that requires ironing.</p>
+                <p class="link">Learn more</p>
+              </div>
+            </div>
+            <div class="subtabs-wrap"><div class="subtabs" id="wi-subtabs"></div></div>
+            <div class="listing" id="wi-list"></div>
+          </div>
+          <!-- Dry cleaning — Figma 129:2179. Items rendered from DRY_CLEANING below -->
+          <div class="panel" role="tabpanel">
+            <div class="svc-callout">
+              <div>
+                <p>For delicate items and fabrics.</p>
+                <p class="link">Learn more</p>
+              </div>
+            </div>
+            <div class="subtabs-wrap"><div class="subtabs" id="dc-subtabs"></div></div>
+            <div class="listing" id="dc-list"></div>
+          </div>
+          <div class="panel" role="tabpanel"><div class="panel-todo">Ironing only prices coming soon.</div></div>
+          <div class="panel" role="tabpanel"><div class="panel-todo">Duvets &amp; bulky items prices coming soon.</div></div>
+        </div>
+
+      <div class="cta-bar">
+        <div class="cta-primary">Book now</div>
+        <div class="home-indicator" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -407,20 +538,204 @@ img { display: block; max-width: none; }
   (function () {
     var screens = document.querySelectorAll('[data-screen]');
     var tabs = document.querySelectorAll('.nav-item[data-go]');
+    var navbar = document.querySelector('.navbar');
+    var navigatedInApp = false;
     function show() {
       var name = (location.hash || '#home').slice(1);
-      if (!document.querySelector('[data-screen="' + name + '"]')) name = 'home';
-      screens.forEach(function (s) { s.hidden = s.dataset.screen !== name; });
+      var current = document.querySelector('[data-screen="' + name + '"]');
+      if (!current) { name = 'home'; current = document.querySelector('[data-screen="home"]'); }
+      screens.forEach(function (s) { s.hidden = s !== current; });
+      // Screens marked data-nav="false" (pushed screens like Prices) hide the bottom tab bar
+      navbar.hidden = current.dataset.nav === 'false';
       tabs.forEach(function (t) {
         if (t.dataset.go === name) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current');
       });
+      var sc = current.querySelector('.scroll');
+      if (sc) sc.scrollTop = 0;
     }
     tabs.forEach(function (t) {
-      t.addEventListener('click', function () { location.hash = t.dataset.go; });
+      t.addEventListener('click', function () { navigatedInApp = true; location.hash = t.dataset.go; });
+    });
+    // Back buttons: return to the previous screen in this tab's history, or straight to their target
+    document.querySelectorAll('[data-back]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (navigatedInApp) { navigatedInApp = false; history.back(); }
+        else location.hash = b.dataset.back;
+      });
     });
     window.addEventListener('hashchange', show);
     show();
   })();
+
+  // Mouse drag-to-scroll for a horizontal row (touch scrolls natively). onRelease gets the drag distance.
+  function draggable(el, onRelease) {
+    var startX = 0, startLeft = 0, down = false, moved = false;
+    el.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      e.stopPropagation(); // the innermost row owns the drag
+      down = true; moved = false; startX = e.clientX; startLeft = el.scrollLeft;
+    });
+    window.addEventListener('pointermove', function (e) {
+      if (!down) return;
+      var dx = e.clientX - startX;
+      if (!moved && Math.abs(dx) > 5) { moved = true; el.classList.add('dragging'); }
+      if (moved) el.scrollLeft = startLeft - dx;
+    });
+    window.addEventListener('pointerup', function (e) {
+      if (!down) return;
+      down = false;
+      if (moved) {
+        el.classList.remove('dragging');
+        if (onRelease) onRelease(e.clientX - startX);
+        // swallow the click that follows a drag
+        el.addEventListener('click', function stop(ev) { ev.stopPropagation(); ev.preventDefault(); }, { capture: true, once: true });
+      }
+    });
+  }
+  // Vertical mouse wheel over a horizontal row scrolls it sideways
+  function wheelSideways(el) {
+    el.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { el.scrollLeft += e.deltaY; e.preventDefault(); }
+    }, { passive: false });
+  }
+  // Bring the selected chip to the row's left edge (as in the Figma designs)
+  function centerInRow(row, child) {
+    row.scrollTo({ left: child.offsetLeft - 16, behavior: 'smooth' });
+  }
+
+  // Service pager: pill row + swipeable panels kept in sync. Touch swipes natively;
+  // mouse users can click a pill, drag either row, or use a trackpad / shift+wheel.
+  document.querySelectorAll('.pills').forEach(function (pills) {
+    var pager = pills.parentElement.querySelector('.pager');
+    var pillBtns = pills.querySelectorAll('.pill');
+    var panels = pager.querySelectorAll('.panel');
+    var index = 0;
+
+    function select(i, scrollPager) {
+      index = Math.max(0, Math.min(panels.length - 1, i));
+      pillBtns.forEach(function (p, n) {
+        p.setAttribute('aria-selected', n === index ? 'true' : 'false');
+        p.tabIndex = n === index ? 0 : -1;
+      });
+      centerInRow(pills, pillBtns[index]);
+      if (scrollPager) pager.scrollTo({ left: index * pager.clientWidth, behavior: 'smooth' });
+    }
+
+    pillBtns.forEach(function (p, n) {
+      p.addEventListener('click', function () { select(n, true); });
+      p.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          select(index + (e.key === 'ArrowRight' ? 1 : -1), true);
+          pillBtns[index].focus();
+        }
+      });
+    });
+
+    wheelSideways(pills);
+    draggable(pills);
+    draggable(pager, function (dx) {
+      var w = pager.clientWidth;
+      var next = index;
+      if (dx < -w * 0.15) next = index + 1; else if (dx > w * 0.15) next = index - 1;
+      select(next, true);
+    });
+
+    // Swipes and trackpad scrolls: update the selected pill once the pager settles
+    var t;
+    pager.addEventListener('scroll', function () {
+      if (pager.classList.contains('dragging')) return;
+      clearTimeout(t);
+      t = setTimeout(function () {
+        var i = Math.round(pager.scrollLeft / pager.clientWidth);
+        if (i !== index) select(i, false);
+      }, 80);
+    }, { passive: true });
+
+    window.addEventListener('resize', function () { pager.scrollLeft = index * pager.clientWidth; });
+  });
+
+  // Dry cleaning price list — laundryheap.com/en-gb/pricing/dry-cleaning/pricelist (checked 27 Oct 2026)
+  var DRY_CLEANING = [
+    ['Shirts', [['Shirt on Hanger', '£2.95'], ['Delicate Shirt on Hanger', '£5.70']]],
+    ['Tops', [['Jumper / Cardigan', '£8.15'], ['Jumper / Cardigan - Delicate', '£10.40'], ['Polo Shirt on Hanger', '£4.40'], ['T-Shirt on Hanger', '£4.40'], ['Top / Blouse', '£6.95'], ['Top / Blouse - Delicate', '£9.50']]],
+    ['Bottoms', [['Shorts', '£6.95'], ['Skirt', '£7.95'], ['Skirt - Delicate', '£9.95'], ['Trousers', '£8.95'], ['Trousers - Delicate', '£12.95']]],
+    ['Suits', [['2-Piece Suit', '£15.45'], ['3-Piece Suit', '£21.20'], ['Dinner / Linen Suit', '£21.20']]],
+    ['Dresses', [['Dress', '£13.95'], ['Dress - Delicate', '£23.50'], ['Dress - Evening', '£26.95'], ['Jumpsuit', '£19.95']]],
+    ['Outerwear', [['Jacket / Blazer', '£9.95'], ['Jacket / Blazer - Delicate', '£12.20'], ['Overcoat / Raincoat', '£15.95'], ['Overcoat - Heavy / Full Length', '£18.25'], ['Puffer / Down Coat', '£26.50'], ['Designer Puffer / Down Coat', '£59.00'], ['Waistcoat', '£8.25']]],
+    ['Children', [['Baby clothes (prices can vary)', '£3.95'], ['Children clothes (prices can vary)', '£4.95']]],
+    ['Accessories & Homewear', [['Gloves', '£4.95'], ['Hat / Cap', '£7.95'], ['Scarf', '£6.95'], ['Socks / Underwear', '£1.95'], ['Tie', '£6.40']]],
+    ['Bed sheets', [['Bed Sheet - All Sizes', '£8.95']]],
+    ['Duvet covers', [['Duvet Cover - All Sizes', '£11.25']]],
+    ['Pillow cases & cushion covers', [['Cushion Cover - Small', '£10.95'], ['Cushion Cover - Medium', '£15.95'], ['Cushion Cover - Large', '£20.95'], ['Pillow Case', '£2.95']]],
+    ['Bathroom items', [['Bath Towel', '£4.95'], ['Bath Mat', '£5.95'], ['Bathrobe', '£12.95'], ['Hand Towel', '£2.95']]],
+    ['Kitchen items', [['Apron', '£3.95'], ['Tablecloth (up to 2m)', '£10.95'], ['Tablecloth (up to 4m)', '£25.00'], ['Tea Towel', '£1.95']]]
+  ];
+
+  // Wash & Iron price list — laundryheap.com/en-gb/pricing/wash-and-iron/pricelist (checked 27 Oct 2026)
+  var WASH_IRON = [
+    ['Shirts', [['Shirt on Hanger', '£2.95'], ['Delicate Shirt on Hanger', '£5.70']]],
+    ['Tops', [['Jumper / Cardigan', '£8.15'], ['Jumper / Cardigan - Delicate', '£7.50'], ['Polo Shirt on Hanger', '£4.40'], ['T-Shirt on Hanger', '£4.40'], ['Top / Blouse', '£6.95']]],
+    ['Bottoms', [['Shorts', '£6.95'], ['Skirt', '£7.95'], ['Trousers', '£8.95']]],
+    ['Dresses', [['Dress', '£13.95'], ['Dress - Delicate', '£23.50'], ['Jumpsuit', '£19.95']]],
+    ['Outerwear', [['Jacket / Blazer', '£9.95'], ['Jacket / Blazer - Delicate', '£12.20'], ['Overcoat / Raincoat', '£15.95'], ['Overcoat - Heavy / Full Length', '£18.25'], ['Puffer / Down Coat', '£26.50'], ['Designer Puffer / Down Coat', '£59.00'], ['Waistcoat', '£8.25']]],
+    ['Children', [['Baby clothes (prices can vary)', '£3.95'], ['Children clothes (prices can vary)', '£4.95']]],
+    ['Accessories & Homewear', [['Gloves', '£4.95'], ['Hat / Cap', '£7.95'], ['Scarf', '£6.95'], ['Socks / Underwear', '£1.95'], ['Tie', '£6.40']]],
+    ['Bed sheets', [['Bed Sheet - All Sizes', '£8.95']]],
+    ['Duvet covers', [['Duvet Cover - All Sizes', '£11.25']]],
+    ['Pillow cases & cushion covers', [['Cushion Cover - Small', '£10.95'], ['Cushion Cover - Medium', '£15.95'], ['Cushion Cover - Large', '£20.95'], ['Pillow Case', '£2.95']]],
+    ['Bathroom items', [['Bath Towel', '£4.95'], ['Bath Mat', '£5.95'], ['Bathrobe', '£12.95'], ['Hand Towel', '£2.95']]],
+    ['Kitchen items', [['Apron', '£3.95'], ['Tablecloth (up to 2m)', '£10.95'], ['Tablecloth (up to 4m)', '£25.00'], ['Tea Towel', '£1.95']]]
+  ];
+
+  // Category list: sticky tab row that jumps to a section, with the underline following the scroll
+  function categoryList(tabsEl, listEl, data) {
+    var panel = listEl.closest('.panel');
+    var esc = function (t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; };
+    tabsEl.innerHTML = data.map(function (c, i) {
+      return '<button class="subtab" type="button" data-i="' + i + '">' + esc(c[0]) + '</button>';
+    }).join('');
+    listEl.innerHTML = data.map(function (c) {
+      return '<section><h2>' + esc(c[0]) + '</h2>' + c[1].map(function (it) {
+        return '<div class="item"><p>' + esc(it[0]) + '</p><p>' + esc(it[1]) + '</p></div>';
+      }).join('') + '</section>';
+    }).join('');
+    var tabs = tabsEl.querySelectorAll('.subtab');
+    var sections = listEl.querySelectorAll('section');
+    var current = -1, jumping = false, jumpTimer;
+
+    function mark(i) {
+      if (i === current) return;
+      current = i;
+      tabs.forEach(function (t, n) { if (n === i) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current'); });
+      centerInRow(tabsEl, tabs[i]);
+    }
+    function sectionTop(i) { return sections[i].offsetTop - tabsEl.parentElement.offsetHeight; }
+
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () {
+        mark(i);
+        jumping = true; clearTimeout(jumpTimer);
+        jumpTimer = setTimeout(function () { jumping = false; }, 700);
+        panel.scrollTo({ top: sectionTop(i), behavior: 'smooth' });
+      });
+    });
+    panel.addEventListener('scroll', function () {
+      if (jumping) return;
+      var y = panel.scrollTop + 1, i = 0;
+      sections.forEach(function (s, n) { if (sectionTop(n) <= y) i = n; });
+      if (panel.scrollTop + panel.clientHeight >= panel.scrollHeight - 2) i = sections.length - 1;
+      mark(i);
+    }, { passive: true });
+    tabsEl.addEventListener('scroll', function () {
+      tabsEl.parentElement.classList.toggle('at-end', tabsEl.scrollLeft + tabsEl.clientWidth >= tabsEl.scrollWidth - 2);
+    }, { passive: true });
+    wheelSideways(tabsEl);
+    draggable(tabsEl);
+    mark(0);
+  }
+  categoryList(document.getElementById('wi-subtabs'), document.getElementById('wi-list'), WASH_IRON);
+  categoryList(document.getElementById('dc-subtabs'), document.getElementById('dc-list'), DRY_CLEANING);
 </script>
 </body>
 </html>
