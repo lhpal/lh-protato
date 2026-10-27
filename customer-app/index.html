@@ -467,7 +467,7 @@ img { display: block; max-width: none; }
           <button class="pill" role="tab" type="button" aria-selected="true" data-tab="0">Wash &amp; Fold</button>
           <button class="pill" role="tab" type="button" aria-selected="false" data-tab="1">Wash &amp; Iron</button>
           <button class="pill" role="tab" type="button" aria-selected="false" data-tab="2">Dry cleaning</button>
-          <button class="pill" role="tab" type="button" aria-selected="false" aria-disabled="true" data-tab="3">Ironing only</button>
+          <button class="pill" role="tab" type="button" aria-selected="false" data-tab="3">Ironing only</button>
           <button class="pill" role="tab" type="button" aria-selected="false" aria-disabled="true" data-tab="4">Duvets &amp; bulky items</button>
         </div>
 
@@ -528,7 +528,18 @@ img { display: block; max-width: none; }
             <div class="subtabs-wrap"><div class="subtabs" id="dc-subtabs"></div></div>
             <div class="listing" id="dc-list"></div>
           </div>
-          <!-- Ironing only and Duvets & bulky items are blocked for this test: their pills show but do nothing, and swiping stops at Dry cleaning -->
+          <!-- Ironing only — same layout as Dry cleaning. Items rendered from IRONING below -->
+          <div class="panel" role="tabpanel">
+            <div class="svc-callout">
+              <div>
+                <p>For items that are already clean.</p>
+                <p class="link">Learn more</p>
+              </div>
+            </div>
+            <div class="subtabs-wrap"><div class="subtabs" id="ir-subtabs"></div></div>
+            <div class="listing" id="ir-list"></div>
+          </div>
+          <!-- Duvets & bulky items is blocked for this test: its pill shows but does nothing, and swiping stops at Ironing only -->
         </div>
 
       <div class="cta-bar">
@@ -855,6 +866,20 @@ img { display: block; max-width: none; }
     ['Kitchen items', [['Apron', '£3.95'], ['Tablecloth (up to 2m)', '£10.95'], ['Tablecloth (up to 4m)', '£25.00'], ['Tea Towel', '£1.95']]]
   ];
 
+  // Ironing only price list — laundryheap.com/en-gb/pricing/ironing/pricelist (checked 27 Oct 2026)
+  var IRONING = [
+    ['Shirts', [['Shirt on Hanger', '£2.85'], ['Delicate Shirt on Hanger', '£4.50']]],
+    ['Tops', [['Jumper / Cardigan', '£6.50'], ['Polo Shirt on Hanger', '£3.55'], ['T-Shirt on Hanger', '£3.55'], ['Top / Blouse', '£4.95'], ['Top / Blouse - Delicate', '£8.50']]],
+    ['Bottoms', [['Shorts', '£4.50'], ['Skirt', '£6.40'], ['Skirt - Delicate', '£7.20'], ['Trousers', '£5.95'], ['Trousers - Delicate', '£7.60']]],
+    ['Dresses', [['Dress', '£10.95'], ['Dress - Delicate', '£18.00'], ['Dress - Evening', '£18.80'], ['Jumpsuit', '£11.95']]],
+    ['Outerwear', [['Waistcoat', '£4.50'], ['Jacket / Blazer', '£7.95']]],
+    ['Children', [['Baby clothes (prices can vary)', '£1.95'], ['Children clothes (prices can vary)', '£3.95']]],
+    ['Bed sheets', [['Bed Sheet - All Sizes', '£6.95']]],
+    ['Duvet covers', [['Duvet Cover - All Sizes', '£9.10']]],
+    ['Pillow cases & cushion covers', [['Pillow Case', '£2.05']]],
+    ['Kitchen items', [['Tablecloth (up to 2m)', '£7.95'], ['Tablecloth (up to 4m)', '£20.00'], ['Apron', '£1.95'], ['Tea Towel', '£1.45']]]
+  ];
+
   // Category list: sticky tab row that jumps to a section, with the underline following the scroll
   function categoryList(tabsEl, listEl, data) {
     var panel = listEl.closest('.panel');
@@ -903,6 +928,7 @@ img { display: block; max-width: none; }
   }
   categoryList(document.getElementById('wi-subtabs'), document.getElementById('wi-list'), WASH_IRON);
   categoryList(document.getElementById('dc-subtabs'), document.getElementById('dc-list'), DRY_CLEANING);
+  categoryList(document.getElementById('ir-subtabs'), document.getElementById('ir-list'), IRONING);
 </script>
 </body>
 </html>
