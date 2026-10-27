@@ -207,6 +207,7 @@ img { display: block; max-width: none; }
 .pills::-webkit-scrollbar { display: none; }
 .pills.dragging { cursor: grabbing; }
 .pill { flex: none; display: flex; align-items: center; justify-content: center; padding: 12px 16px; border: 0; border-radius: 9999px; background: var(--bg-gray); color: var(--medium-gray); font: 700 14px/16px var(--font); white-space: nowrap; text-transform: uppercase; cursor: pointer; transition: background-color .2s, color .2s; }
+.pill[aria-disabled="true"] { cursor: default; }
 .pill[aria-selected="true"] { background: var(--light-blue); color: var(--white); }
 .pill:focus-visible { outline: 2px solid var(--dark-blue); outline-offset: 2px; }
 .pills, .subtabs { position: relative; }
@@ -432,8 +433,8 @@ img { display: block; max-width: none; }
           <button class="pill" role="tab" type="button" aria-selected="true" data-tab="0">Wash &amp; Fold</button>
           <button class="pill" role="tab" type="button" aria-selected="false" data-tab="1">Wash &amp; Iron</button>
           <button class="pill" role="tab" type="button" aria-selected="false" data-tab="2">Dry cleaning</button>
-          <button class="pill" role="tab" type="button" aria-selected="false" data-tab="3">Ironing only</button>
-          <button class="pill" role="tab" type="button" aria-selected="false" data-tab="4">Duvets &amp; bulky items</button>
+          <button class="pill" role="tab" type="button" aria-selected="false" aria-disabled="true" data-tab="3">Ironing only</button>
+          <button class="pill" role="tab" type="button" aria-selected="false" aria-disabled="true" data-tab="4">Duvets &amp; bulky items</button>
         </div>
 
         <div class="pager">
@@ -493,8 +494,7 @@ img { display: block; max-width: none; }
             <div class="subtabs-wrap"><div class="subtabs" id="dc-subtabs"></div></div>
             <div class="listing" id="dc-list"></div>
           </div>
-          <div class="panel" role="tabpanel"><div class="panel-todo">Ironing only prices coming soon.</div></div>
-          <div class="panel" role="tabpanel"><div class="panel-todo">Duvets &amp; bulky items prices coming soon.</div></div>
+          <!-- Ironing only and Duvets & bulky items are blocked for this test: their pills show but do nothing, and swiping stops at Dry cleaning -->
         </div>
 
       <div class="cta-bar">
@@ -622,7 +622,7 @@ img { display: block; max-width: none; }
     }
 
     pillBtns.forEach(function (p, n) {
-      p.addEventListener('click', function () { select(n, true); });
+      p.addEventListener('click', function () { if (p.getAttribute('aria-disabled') !== 'true') select(n, true); });
       p.addEventListener('keydown', function (e) {
         if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
           e.preventDefault();
