@@ -290,6 +290,29 @@ img { display: block; max-width: none; }
   .sheet, .sheet-scrim { transition: none; }
 }
 
+/* ---------- Service details ("Learn more") — Figma 133:3126 ---------- */
+.sd-top { flex: none; height: 44px; position: relative; background: var(--sd-bg); }
+.sd-hero { display: flex; flex-direction: column; gap: 16px; padding: 16px; background: var(--sd-bg); }
+.sd-hero .head { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.sd-hero .head img { width: 48px; height: 48px; }
+.sd-hero h2 { margin: 0; font-weight: 500; font-size: 32px; line-height: 36px; }
+.sd-hero .blurb { font-weight: 500; font-size: 18px; line-height: 23px; }
+.badges { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 1px; }
+.badge { padding: 2.444px 3.667px 1.222px; border-radius: 3px; background: var(--white); font-weight: 600; font-size: 14.67px; line-height: 23.9px; text-transform: uppercase; white-space: nowrap; }
+.badges .plus { font-weight: 700; font-size: 12px; line-height: 19.556px; }
+.sd-list { display: flex; flex-direction: column; gap: 24px; padding: 24px 16px 24px; }
+.sd-item { display: flex; flex-direction: column; gap: 8px; }
+.sd-item .hl { display: flex; align-items: center; gap: 8px; }
+.sd-item .hl img { width: 32px; height: 32px; flex: none; }
+.sd-item h3 { margin: 0; font-weight: 600; font-size: 16px; line-height: 21px; }
+.sd-item .body, .sd-item li { font-size: 16px; line-height: 21px; color: var(--dark-gray); }
+.sd-item ul { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px; }
+.sd-item .opt b { font-weight: 600; color: var(--deep-black); }
+.sd-foot { position: relative; flex: none; height: 34px; background: var(--white); }
+@media (max-width: 500px) {
+  .sd-foot { height: env(safe-area-inset-bottom, 0px); }
+}
+
 /* ---------- Placeholder (screens not designed yet) ---------- */
 .todo { flex: 1; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--bg-gray); }
 .todo h2 { margin: 0 0 8px; font-size: 24px; line-height: 26px; color: var(--dark-blue); }
@@ -477,7 +500,7 @@ img { display: block; max-width: none; }
             <div class="svc-callout">
               <div>
                 <p>For everyday laundry, bedsheets and towels.</p>
-                <p class="link">Learn more</p>
+                <button class="link link-btn" type="button" data-learn="wf">Learn more</button>
               </div>
             </div>
             <div class="price-list">
@@ -511,7 +534,7 @@ img { display: block; max-width: none; }
             <div class="svc-callout">
               <div>
                 <p>For everyday laundry that requires ironing.</p>
-                <p class="link">Learn more</p>
+                <button class="link link-btn" type="button" data-learn="wi">Learn more</button>
               </div>
             </div>
             <div class="subtabs-wrap"><div class="subtabs" id="wi-subtabs"></div></div>
@@ -522,7 +545,7 @@ img { display: block; max-width: none; }
             <div class="svc-callout">
               <div>
                 <p>For delicate items and fabrics.</p>
-                <p class="link">Learn more</p>
+                <button class="link link-btn" type="button" data-learn="dc">Learn more</button>
               </div>
             </div>
             <div class="subtabs-wrap"><div class="subtabs" id="dc-subtabs"></div></div>
@@ -533,7 +556,7 @@ img { display: block; max-width: none; }
             <div class="svc-callout">
               <div>
                 <p>For items that are already clean.</p>
-                <p class="link">Learn more</p>
+                <button class="link link-btn" type="button" data-learn="ir">Learn more</button>
               </div>
             </div>
             <div class="subtabs-wrap"><div class="subtabs" id="ir-subtabs"></div></div>
@@ -544,7 +567,7 @@ img { display: block; max-width: none; }
             <div class="svc-callout">
               <div>
                 <p>For larger items that require extra care.</p>
-                <p class="link">Learn more</p>
+                <button class="link link-btn" type="button" data-learn="du">Learn more</button>
               </div>
             </div>
             <div class="subtabs-wrap"><div class="subtabs" id="du-subtabs"></div></div>
@@ -556,6 +579,15 @@ img { display: block; max-width: none; }
         <div class="cta-primary">Book now</div>
         <div class="home-indicator" aria-hidden="true"></div>
       </div>
+    </section>
+
+    <!-- ===== Screen: Service details ("Learn more") — filled from SERVICE_DETAILS by the service picked ===== -->
+    <section class="screen screen-white" data-screen="service" data-nav="false" hidden>
+      <div class="sd-top">
+        <button class="back" type="button" data-back="prices" aria-label="Back to prices"><img src="assets/chevron-left.svg" alt=""></button>
+      </div>
+      <div class="scroll" id="sd-content"></div>
+      <div class="sd-foot"><div class="home-indicator" aria-hidden="true"></div></div>
     </section>
 
     <!-- ===== Bottom navigation (shared by all tab screens) ===== -->
@@ -624,11 +656,17 @@ img { display: block; max-width: none; }
     var screens = document.querySelectorAll('[data-screen]');
     var tabs = document.querySelectorAll('.nav-item[data-go]');
     var navbar = document.querySelector('.navbar');
-    var navigatedInApp = false;
+    var statusBar = document.querySelector('.status-bar');
+    var navDepth = 0; // in-app screens pushed on top of the first one, so Back can use browser history
+    var prev = null;
     function show() {
       var name = (location.hash || '#home').slice(1);
       var current = document.querySelector('[data-screen="' + name + '"]');
       if (!current) { name = 'home'; current = document.querySelector('[data-screen="home"]'); }
+      // Service details need a service picked on Prices; on a direct visit, go to Prices instead
+      if (name === 'service' && !current.dataset.ready) { location.replace('#prices'); return; }
+      // The status bar takes the screen's top colour (service details are tinted per service)
+      statusBar.style.background = current.dataset.bar || '';
       screens.forEach(function (s) { s.hidden = s !== current; });
       // Screens marked data-nav="false" (pushed screens like Prices) hide the bottom tab bar
       navbar.hidden = current.dataset.nav === 'false';
@@ -637,16 +675,19 @@ img { display: block; max-width: none; }
       });
       var sc = current.querySelector('.scroll');
       if (sc) sc.scrollTop = 0;
-      // Screens with a service pager always open on the first service (Wash & Fold), scrolled to the top
-      current.querySelectorAll('.pager').forEach(function (pg) { if (pg.resetPager) pg.resetPager(); });
+      // Screens with a service pager open on the first service (Wash & Fold), scrolled to the top,
+      // except when coming back from that service's details
+      if (prev !== 'service') current.querySelectorAll('.pager').forEach(function (pg) { if (pg.resetPager) pg.resetPager(); });
+      prev = name;
     }
+    window.goTo = function (name) { navDepth++; location.hash = name; };
     tabs.forEach(function (t) {
-      t.addEventListener('click', function () { navigatedInApp = true; location.hash = t.dataset.go; });
+      t.addEventListener('click', function () { window.goTo(t.dataset.go); });
     });
     // Back buttons: return to the previous screen in this tab's history, or straight to their target
     document.querySelectorAll('[data-back]').forEach(function (b) {
       b.addEventListener('click', function () {
-        if (navigatedInApp) { navigatedInApp = false; history.back(); }
+        if (navDepth > 0) { navDepth--; history.back(); }
         else location.hash = b.dataset.back;
       });
     });
@@ -841,6 +882,81 @@ img { display: block; max-width: none; }
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(openLayer); });
     // Leaving the screen closes any open sheet
     window.addEventListener('hashchange', function () { close(openLayer); });
+  })();
+
+  // Service details ("Learn more"). Header design from Figma; copy from laundryheap.com/en-gb/pricing/<service>/pricelist
+  var SERVICE_DETAILS = {
+    wf: { title: 'Wash & Fold', bg: '#baebff', icon: 'svc-wf.svg', blurb: 'For everyday laundry, bedsheets and towels.',
+      badges: ['Wash', 'Tumble-dry', 'Folded', 'In a bag'],
+      items: [
+        ['overview', 'Service overview', "Your items are machine washed at 30°C and tumble dried. 60°C can be requested. No ironing is included. We price your order based on how much it weighs - no need to worry if it's slightly over."],
+        ['overview', 'Service options', { options: [['Mixed wash', 'We will wash & tumble dry your laundry as you send it, all colours together.'], ['Separate wash', 'We will separate your laundry into 2 loads, lights and dark-coloured, and wash each load separately to minimize the risk of a colour run.']] }],
+        ['suitable', 'Suitable for', 'Everyday laundry that can be machine washed and tumble dried. Some popular items typically included are t-shirts, trousers, bedsheets and undergarments.'],
+        ['exclude', 'Do not include', { list: ['Laundry that is not suitable for machine washing and/or tumble drying', 'Dry-clean only items', 'Bath mats', 'Duvets and bulky items', 'Any type of shoes', 'Pet beds/items', 'Inflammable items, including very greased cloths'] }],
+        ['prepare', 'How to prepare for collection', 'Please check your pockets and remove all items. If you are booking multiple services, please prepare all items for the Wash service in a separate bag. Your Laundryheap driver will tag the bag with the required service.'],
+        ['return', 'How you’ll receive the items back', 'We will return your clean laundry neatly packed, in a bag.']
+      ] },
+    wi: { title: 'Wash & Iron', bg: '#fbb4c2', icon: 'svc-wi.svg', blurb: 'For everyday laundry that requires ironing.',
+      badges: ['Wash', 'Tumble-dry', 'Ironing', 'On hangers'],
+      items: [
+        ['overview', 'Service overview', 'Your items are machine washed at 30°C, tumble dried and ironed.'],
+        ['suitable', 'Suitable for', 'All laundry that can be machine washed, tumble dried and ironed. Some of the popular items that are typically included are shirts, t-shirts, trousers and bedsheets.'],
+        ['exclude', 'Do not include', 'Laundry that is not suitable for machine washing and/or tumble drying and/or ironing.'],
+        ['prepare', 'How to prepare for collection', 'If you are booking more services, please prepare all items for the Wash & iron service in a separate bag. Your Laundryheap driver will tag the bag with the required service.'],
+        ['return', 'How you’ll receive the items back', 'We will return your clean items on hangers. Some items can be folded upon request, at an extra cost.']
+      ] },
+    dc: { title: 'Dry cleaning', bg: '#93ece5', icon: 'svc-dc.svg', blurb: 'For delicate items and fabrics.',
+      badges: ['Dry cleaning', 'Ironing', 'On hangers'],
+      items: [
+        ['overview', 'Service overview', 'Your items are dry-cleaned and ironed.'],
+        ['suitable', 'Suitable for', 'All items that can be dry-cleaned and ironed. Some of the popular items that are typically included are suits, shirts, dresses and coats.'],
+        ['exclude', 'Do not include', 'Items that are not suitable for dry cleaning and/or ironing.'],
+        ['prepare', 'How to prepare for collection', 'If you are booking multiple services, please prepare all items for the Dry cleaning service in a separate bag. No need to list all items, we’ll take care of that.'],
+        ['return', 'How you’ll receive the items back', 'We will return your clean items on hangers. Some items can be folded upon request, at an extra cost.']
+      ] },
+    ir: { title: 'Ironing only', bg: '#ffe5ae', icon: 'svc-ir.svg', blurb: 'For items that are already clean.',
+      badges: ['Ironing', 'On hangers'],
+      items: [
+        ['overview', 'Service overview', 'Your items are only ironed.'],
+        ['suitable', 'Suitable for', 'Already washed items, that can be ironed. Some of the popular items that are typically included are shirts, t-shirts and bedsheets.'],
+        ['exclude', 'Do not include', 'Items that cannot be ironed and/or are soiled or extremely creased. You can select a Wash & iron service for the latter.'],
+        ['prepare', 'How to prepare for collection', 'If you are booking multiple services, please prepare all items for the ironing only service in a separate bag. No need to list all items, we’ll take care of that.'],
+        ['return', 'How you’ll receive the items back', 'We will return your ironed items on hangers. Some items can be folded upon request, at an extra cost.']
+      ] },
+    du: { title: 'Duvets & bulky', bg: '#dcf5ff', icon: 'svc-du.svg', blurb: 'For larger items that require extra care.',
+      badges: ['Custom cleaning'],
+      items: [
+        ['overview', 'Service overview', 'The cleaning process varies depending on each item’s requirement. Some items will need 72 hours to process.'],
+        ['suitable', 'Suitable for', 'Large items that cannot be cleaned in a regular wash and require special care. Some of the popular items that are typically included are duvets, pillows and blankets.'],
+        ['exclude', 'Do not include', 'Sheets, duvet covers, pillow cases and towels. You can select a Wash service for these.'],
+        ['prepare', 'How to prepare for collection', 'If you are booking multiple services, please prepare all items for the Duvets & Bulky service in a separate bag. No need to list all items, we’ll take care of that.'],
+        ['return', 'How you’ll receive the items back', 'We will return your clean items in a bag.']
+      ] }
+  };
+  (function () {
+    var screen = document.querySelector('[data-screen="service"]');
+    var content = document.getElementById('sd-content');
+    var esc = function (t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; };
+    function body(b) {
+      if (typeof b === 'string') return '<p class="body">' + esc(b) + '</p>';
+      if (b.list) return '<ul>' + b.list.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+      return '<ul>' + b.options.map(function (o) { return '<li class="opt"><b>' + esc(o[0]) + ':</b> ' + esc(o[1]) + '</li>'; }).join('') + '</ul>';
+    }
+    function render(key) {
+      var d = SERVICE_DETAILS[key];
+      screen.style.setProperty('--sd-bg', d.bg);
+      screen.dataset.bar = d.bg;
+      screen.dataset.ready = '1';
+      content.innerHTML =
+        '<div class="sd-hero"><div class="head"><img src="assets/' + d.icon + '" alt=""><h2>' + esc(d.title) + '</h2><p class="blurb">' + esc(d.blurb) + '</p></div>' +
+        '<div class="badges">' + d.badges.map(function (b) { return '<span class="badge">' + esc(b) + '</span>'; }).join('<span class="plus">+</span>') + '</div></div>' +
+        '<div class="sd-list">' + d.items.map(function (it) {
+          return '<div class="sd-item"><div class="hl"><img src="assets/sd-' + it[0] + '.svg" alt=""><h3>' + esc(it[1]) + '</h3></div>' + body(it[2]) + '</div>';
+        }).join('') + '</div>';
+    }
+    document.querySelectorAll('[data-learn]').forEach(function (b) {
+      b.addEventListener('click', function () { render(b.dataset.learn); window.goTo('service'); });
+    });
   })();
 
   // Dry cleaning price list — laundryheap.com/en-gb/pricing/dry-cleaning/pricelist (checked 27 Oct 2026)
