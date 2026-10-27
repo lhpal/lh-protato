@@ -552,6 +552,8 @@ img { display: block; max-width: none; }
       });
       var sc = current.querySelector('.scroll');
       if (sc) sc.scrollTop = 0;
+      // Screens with a service pager always open on the first service (Wash & Fold), scrolled to the top
+      current.querySelectorAll('.pager').forEach(function (pg) { if (pg.resetPager) pg.resetPager(); });
     }
     tabs.forEach(function (t) {
       t.addEventListener('click', function () { navigatedInApp = true; location.hash = t.dataset.go; });
@@ -647,12 +649,19 @@ img { display: block; max-width: none; }
       if (pager.classList.contains('dragging')) return;
       clearTimeout(t);
       t = setTimeout(function () {
+        if (!pager.clientWidth) return; // screen is hidden
         var i = Math.round(pager.scrollLeft / pager.clientWidth);
         if (i !== index) select(i, false);
       }, 80);
     }, { passive: true });
 
     window.addEventListener('resize', function () { pager.scrollLeft = index * pager.clientWidth; });
+
+    pager.resetPager = function () {
+      select(0, false);
+      pager.scrollLeft = 0;
+      panels.forEach(function (pn) { pn.scrollTop = 0; });
+    };
   });
 
   // Dry cleaning price list — laundryheap.com/en-gb/pricing/dry-cleaning/pricelist (checked 27 Oct 2026)
