@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex, nofollow">
+<title>Laundryheap Home Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lato:wght@400;700&display=swap">
+<style>
+/* Mobile app prototype: a 375pt phone screen. Phones get it full-bleed; wider screens get it centred in a phone frame.
+   Single light theme on purpose: it mirrors the Laundryheap app exactly. Colours are the Figma tokens. */
+:root {
+  --deep-black: #1c2026;
+  --dark-gray: #585c62;
+  --medium-gray: #9c9ea3;
+  --light-gray: #d8dcdf;
+  --bg-gray: #f7fafc;
+  --white: #ffffff;
+  --light-blue: #0890f1;
+  --dark-blue: #202b93;
+  --warm-yellow: #ffd06d;
+  --highlight: #daf4ff;
+  --alert-light: #ffe8f6;
+  --desk: #e6eaee;
+  --shadow: 0 2px 12px rgba(216, 220, 223, 0.4);
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-nav: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+html, body { height: 100%; margin: 0; }
+[hidden] { display: none !important; }
+body {
+  background: var(--desk);
+  color: var(--deep-black);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+p { margin: 0; }
+img { display: block; max-width: none; }
+
+/* ---------- Device shell ---------- */
+.stage { height: 100%; display: grid; place-items: center; padding: 16px; box-sizing: border-box; }
+.phone {
+  position: relative;
+  width: 375px;
+  height: min(812px, calc(100dvh - 32px));
+  background: var(--bg-gray);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow: 0 0 0 10px #1c2026, 0 30px 60px rgba(28, 32, 38, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 500px) {
+  .stage { padding: 0; display: block; }
+  .phone { width: 100%; height: 100%; border-radius: 0; box-shadow: none; }
+  .status-bar, .home-indicator { display: none !important; }
+}
+
+/* ---------- Screens (one <section class="screen"> per screen, routed by #hash) ---------- */
+.screen { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; overscroll-behavior: contain; }
+.scroll::-webkit-scrollbar { display: none; }
+
+/* ---------- Status bar (desktop frame only) ---------- */
+.status-bar { position: relative; flex: none; height: 44px; background: var(--white); }
+.status-bar .time { position: absolute; left: 21px; top: 13px; width: 54px; text-align: center; font-weight: 600; font-size: 15px; line-height: 20px; letter-spacing: -0.24px; }
+.status-bar .sb { position: absolute; }
+.sb-cell { right: 64px; top: 17.67px; width: 17px; height: 10.67px; }
+.sb-wifi { right: 43.67px; top: 17.33px; width: 15.33px; height: 11px; }
+.sb-batt { right: 16.67px; top: 17.33px; width: 22px; height: 11.33px; box-sizing: border-box; border: 1px solid var(--deep-black); border-radius: 2.667px; opacity: 0.35; }
+.sb-cap { right: 14.34px; top: 21px; width: 1.33px; height: 4px; }
+.sb-fill { right: 18.67px; top: 19.33px; width: 18px; height: 7.33px; border-radius: 1.333px; background: var(--deep-black); }
+
+/* ---------- Top bar: country + language ---------- */
+.topbar { flex: none; display: flex; align-items: center; justify-content: space-between; background: var(--white); padding: 16px 16px 12px; }
+.country { display: flex; align-items: center; gap: 8px; width: 168px; box-sizing: border-box; padding: 8px; border-radius: 9999px; background: var(--bg-gray); }
+.country .flag { width: 24px; height: 24px; }
+.country .name { flex: 1; min-width: 0; font-weight: 700; font-size: 12px; line-height: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.country .chev { width: 24px; height: 24px; display: grid; place-items: center; }
+.country .chev img { width: 16px; height: 16px; transform: scaleY(-1); }
+.lang { font-weight: 700; font-size: 12px; line-height: 14px; color: var(--light-blue); }
+
+/* ---------- Shared bits ---------- */
+.btn-dark { display: inline-flex; align-items: center; justify-content: center; padding: 8px 16px; border-radius: 4px; background: var(--dark-blue); color: var(--white); font-weight: 700; font-size: 14px; line-height: 16px; white-space: nowrap; }
+.abs { position: absolute; }
+.fill { position: absolute; inset: 0; width: 100%; height: 100%; }
+.center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; }
+
+/* ---------- How it works ---------- */
+.master { background: var(--white); }
+.how { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px 16px; background: var(--white); }
+.how-title { display: flex; align-items: center; gap: 8px; padding: 8px; width: 100%; box-sizing: border-box; }
+.how-title img { width: 26px; height: 24px; }
+.how-title p { font-weight: 500; font-size: 18px; line-height: 23px; }
+.how-list { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.how-card { display: flex; align-items: center; gap: 16px; height: 82px; padding: 16px; box-sizing: border-box; border-radius: 8px; background: var(--white); }
+.how-icon { position: relative; flex: none; width: 32px; height: 32px; }
+.how-icon .cursor { position: absolute; inset: 16.67%; }
+.how-icon .cursor > div { position: absolute; inset: 6.25%; overflow: hidden; }
+.how-icon .cursor img { position: absolute; top: 0; bottom: 0; left: 17.02%; right: 17.69%; width: auto; height: 100%; }
+.how-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.how-text .t { font-weight: 600; font-size: 16px; line-height: 21px; }
+.how-text .s { font-weight: 500; font-size: 13px; line-height: 18px; color: var(--dark-gray); }
+.cta-primary { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; border-radius: 4px; background: var(--warm-yellow); color: var(--dark-blue); font-weight: 700; font-size: 16px; line-height: 18px; text-transform: uppercase; }
+
+/* ---------- Promotions area ---------- */
+.promos { display: flex; flex-direction: column; gap: 24px; padding: 24px 16px; background: var(--bg-gray); }
+.callout { display: flex; align-items: center; gap: 8px; padding: 16px; border-radius: 8px; background: var(--highlight); }
+.callout .left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 16px; }
+.callout .b { font-weight: 700; }
+.callout .link { font-weight: 700; color: var(--light-blue); }
+.callout img { width: 36px; height: 36px; flex: none; }
+
+/* Promotion carousel: swipes horizontally, second card peeks like in the app */
+.cluster { display: flex; gap: 16px; margin: -12px -16px; padding: 12px 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; scrollbar-width: none; }
+.cluster::-webkit-scrollbar { display: none; }
+.promo { position: relative; flex: none; width: 308.7px; height: 160px; scroll-snap-align: start; }
+.promo .card { position: absolute; left: -12px; top: -10px; width: 333px; height: 184px; }
+.promo .tag { position: absolute; left: 16px; top: 16px; display: flex; align-items: center; gap: 4px; padding: 4px; }
+.promo .tag img { width: 12px; height: 12px; }
+.promo .tag span { font-weight: 700; font-size: 10px; line-height: 12px; color: var(--dark-blue); }
+.promo .title { position: absolute; left: 16px; top: 44px; width: 167px; font-weight: 700; font-size: 24px; line-height: 26px; }
+.promo .btn-dark { position: absolute; left: 16px; bottom: 16px; }
+.promo .ph { position: absolute; right: -0.3px; top: 0; width: 128px; height: 160px; overflow: hidden; border-radius: 0 8px 8px 0; }
+.promo .circle { position: absolute; left: 55px; top: -14px; width: 188px; height: 188px; }
+.promo .svc { position: absolute; left: 0; top: calc(50% + 0.5px); transform: translateY(-50%); width: 83px; height: 83px; overflow: hidden; }
+.promo .cut { position: absolute; left: 123px; width: 5px; height: 13px; }
+
+/* ---------- Prepaid widget ---------- */
+.prepaid { display: flex; gap: 4px; padding: 8px; overflow: hidden; border: 1px solid var(--white); border-radius: 8px; background: var(--white); box-shadow: 0 2px 12px rgba(216, 220, 223, 0.48); }
+.prepaid .left { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 8px; }
+.prepaid .left p { font-weight: 600; font-size: 16px; line-height: 24px; color: var(--dark-blue); }
+.prepaid .right { position: relative; flex: none; width: 102px; }
+.prepaid .burst { width: 189.88px; height: 189.88px; margin-left: -0.06px; margin-top: 0.44px; }
+.prepaid .burst img { width: 139px; height: 139px; rotate: -30deg; }
+.stamp { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 84px; height: 88px; color: var(--dark-blue); }
+.stamp img { position: absolute; left: 0; top: 2px; width: 84px; height: 84px; }
+.stamp p { position: absolute; white-space: nowrap; }
+.stamp .r { font-size: 14px; line-height: 16px; }
+.stamp .big { left: 16px; top: 31px; font-weight: 700; font-size: 24px; line-height: 26px; }
+
+/* ---------- Refer a friend ---------- */
+.raf { display: flex; gap: 16px; overflow: hidden; border-radius: 8px; background: var(--alert-light); box-shadow: var(--shadow); }
+.raf .left { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; padding: 16px 0 16px 16px; }
+.raf .top { display: flex; flex-direction: column; gap: 4px; }
+.raf h3 { margin: 0; font-weight: 700; font-size: 18px; line-height: 26px; color: var(--dark-blue); }
+.raf .body { font-size: 14px; line-height: 16px; }
+.raf .ph { position: relative; flex: none; width: 114px; overflow: hidden; }
+.raf .heart { width: 132px; height: 123px; margin-left: 22px; margin-top: 0.5px; }
+.raf .gift { width: 133.19px; height: 142.38px; margin-left: 22.59px; margin-top: 0.76px; }
+.raf .gift img { width: 106px; height: 119px; object-fit: cover; rotate: -15deg; }
+
+/* ---------- Laundryheap+ ---------- */
+.lhplus { display: flex; align-items: center; gap: 8px; padding: 16px; overflow: hidden; border-radius: 5px; background: linear-gradient(68.46deg, #ffffff 46.617%, #91cffe 163.47%); box-shadow: var(--shadow); }
+.lhplus .left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.lhplus .h { font-weight: 600; font-size: 16px; line-height: 24px; color: var(--dark-blue); }
+.lhplus .s { width: 186px; max-width: 100%; font-size: 14px; line-height: 16px; color: var(--dark-gray); }
+.lhplus .link { font-weight: 700; font-size: 14px; line-height: 16px; color: var(--light-blue); }
+.lh-icon { position: relative; flex: none; width: 64px; height: 64px; }
+.lh-plus { position: absolute; left: 2px; top: 2px; width: 60px; height: 60px; }
+.lh-set { position: absolute; inset: 2.5%; }
+.lh-set > div { position: absolute; inset: -4.69% -6.26% -7.82% -6.26%; }
+.lh-set img { width: 100%; height: 100%; }
+.lh-vec { position: absolute; left: 43.75%; right: 43.75%; top: 1px; height: 8px; }
+.lh-vec img { width: 100%; height: 100%; }
+.skew { flex: none; scale: 1 -0.98; transform: skewX(-10deg); }
+.promo-ic { position: relative; }
+.box { position: absolute; display: block; }
+.box img { width: 100%; height: 100%; }
+
+/* ---------- Bottom navigation ---------- */
+.navbar { position: relative; flex: none; height: 94px; background: var(--white); }
+.navbar::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--light-gray); opacity: 0.6; }
+.nav-row { position: absolute; left: 5.37%; right: 2.89%; top: 0; height: 57px; display: flex; align-items: flex-end; justify-content: center; gap: 24px; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; background: none; border: 0; padding: 0; cursor: pointer; font: inherit; color: inherit; }
+.nav-item .ic { position: relative; width: 24px; height: 24px; }
+.nav-item .lbl { width: 48px; font-family: var(--font-nav); font-size: 10px; line-height: 12px; letter-spacing: 0.12px; text-align: center; color: var(--medium-gray); }
+.nav-item[aria-current="page"] .lbl { font-weight: 700; color: var(--light-blue); }
+.nav-item:focus-visible { outline: 2px solid var(--light-blue); outline-offset: 2px; border-radius: 4px; }
+.nav-item .ic-active { display: none; }
+.nav-item[aria-current="page"] .ic-active { display: block; }
+.nav-item[aria-current="page"] .ic-idle { display: none; }
+.mask-ic { width: 24px; height: 24px; background: var(--light-blue); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+.more-dots { position: absolute; left: 1px; top: 9px; width: 22px; height: 6px; }
+.book { position: relative; width: 56px; height: 56px; border-radius: 74px; background: var(--warm-yellow); }
+.book::before, .book::after { content: ""; position: absolute; left: 50%; top: 50%; width: 3px; height: 16px; border-radius: 50px; background: var(--dark-blue); transform: translate(-50%, -50%); }
+.book::after { transform: translate(-50%, -50%) rotate(90deg); }
+.home-indicator { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); width: 135px; height: 5px; border-radius: 100px; background: #000000; }
+@media (max-width: 500px) {
+  .navbar { height: calc(73px + env(safe-area-inset-bottom, 0px)); }
+  .nav-row { left: 0; right: 0; }
+}
+
+/* ---------- Placeholder (screens not designed yet) ---------- */
+.todo { flex: 1; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--bg-gray); }
+.todo h2 { margin: 0 0 8px; font-size: 24px; line-height: 26px; color: var(--dark-blue); }
+.todo p { font-size: 14px; line-height: 20px; color: var(--dark-gray); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="phone" id="phone">
+
+    <div class="status-bar" aria-hidden="true">
+      <p class="time">9:41</p>
+      <img class="sb sb-cell" src="assets/sb-cell.svg" alt="">
+      <img class="sb sb-wifi" src="assets/sb-wifi.svg" alt="">
+      <div class="sb sb-batt"></div>
+      <img class="sb sb-cap" src="assets/sb-cap.svg" alt="">
+      <div class="sb sb-fill"></div>
+    </div>
+
+    <!-- ===== Screen: Home / dashboard (first-time user) — Figma 127:1150 ===== -->
+    <section class="screen" data-screen="home">
+      <div class="topbar">
+        <div class="country">
+          <img class="flag" src="assets/flag-uk.png" alt="">
+          <p class="name">United Kingdom</p>
+          <div class="chev"><img src="assets/chevron-right.svg" alt=""></div>
+        </div>
+        <p class="lang">English</p>
+      </div>
+
+      <div class="scroll">
+        <div class="master">
+          <div class="how">
+            <div class="how-title">
+              <img src="assets/logo-h.svg" alt="">
+              <p>How it works?</p>
+            </div>
+            <div class="how-list">
+              <div class="how-card">
+                <div class="how-icon">
+                  <img class="fill" src="assets/hiw-service.svg" alt="">
+                  <div class="cursor"><div><img src="assets/hiw-cursor.svg" alt=""></div></div>
+                </div>
+                <div class="how-text">
+                  <p class="t">1. Select service</p>
+                  <p class="s">No need to list each item. We’ll weigh or count your items before cleaning.</p>
+                </div>
+              </div>
+              <div class="how-card">
+                <div class="how-icon"><img class="fill" src="assets/hiw-pack.svg" alt=""></div>
+                <div class="how-text">
+                  <p class="t">2. Pack your items</p>
+                  <p class="s">Use one bag per service.</p>
+                </div>
+              </div>
+              <div class="how-card">
+                <div class="how-icon"><img class="fill" src="assets/hiw-driver.svg" alt=""></div>
+                <div class="how-text">
+                  <p class="t">3. Hand over the bags</p>
+                  <p class="s">Meet your driver or leave the bags at your door.</p>
+                </div>
+              </div>
+            </div>
+            <div class="cta-primary">book first order</div>
+          </div>
+
+          <div class="promos">
+            <div class="callout">
+              <div class="left">
+                <p class="b">Getting started?</p>
+                <p>See how Laundryheap works and learn more about our services</p>
+                <p class="link">Learn more</p>
+              </div>
+              <img src="assets/blob-info.svg" alt="">
+            </div>
+
+            <div class="cluster">
+              <div class="promo">
+                <img class="card" src="assets/promo-wf-card.svg" alt="">
+                <div class="tag"><img src="assets/promo-tag.svg" alt=""><span>PROMOTION</span></div>
+                <p class="title">10% off on<br>Wash &amp; Fold</p>
+                <div class="btn-dark">Claim now</div>
+                <div class="ph">
+                  <img class="circle" src="assets/promo-wf-circle.svg" alt="">
+                  <img class="abs" style="right:0;top:21px;width:115px;height:117px;object-fit:cover" src="assets/promo-wf-photo.png" alt="">
+                  <div class="svc">
+                    <span class="box" style="inset:42.66% 5.59% 24.48% 5.6%;width:auto;height:auto"><img src="assets/promo-waves.svg" alt=""></span>
+                    <span class="box" style="inset:24.2% 49.28% 61.51% 17.26%"><img src="assets/promo-ell186.svg" alt=""></span>
+                    <span class="box" style="inset:24.2% 21.61% 61.51% 45.74%"><img src="assets/promo-ell187.svg" alt=""></span>
+                  </div>
+                  <img class="cut" style="top:2px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:18px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:34px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:50px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:66px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:82px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:98px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:114px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:130px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:146px" src="assets/promo-cuts.svg" alt="">
+                </div>
+              </div>
+
+              <div class="promo">
+                <img class="card" src="assets/promo-wi-card.svg" alt="">
+                <div class="tag"><img src="assets/promo-tag.svg" alt=""><span>PROMOTION</span></div>
+                <p class="title">10% off on<br>Wash &amp; Iron</p>
+                <div class="btn-dark">Claim now</div>
+                <div class="ph">
+                  <img class="circle" src="assets/promo-wi-circle.svg" alt="">
+                  <img class="abs" style="right:-47px;top:7px;width:135px;height:146px;object-fit:cover" src="assets/promo-wi-photo.png" alt="">
+                  <div class="svc">
+                    <span class="box" style="inset:14.6% 8.32% 14.45% 8.2%"><img src="assets/promo-wi-icon.svg" alt=""></span>
+                  </div>
+                  <img class="cut" style="top:2px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:18px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:34px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:50px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:66px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:82px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:98px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:114px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:130px" src="assets/promo-cuts.svg" alt=""><img class="cut" style="top:146px" src="assets/promo-cuts.svg" alt="">
+                </div>
+              </div>
+            </div>
+
+            <div class="prepaid">
+              <div class="left">
+                <p>Prepay and save on your frequent laundry items</p>
+                <div class="btn-dark">Save now</div>
+              </div>
+              <div class="right">
+                <div class="center burst"><img src="assets/prepaid-burst.svg" alt=""></div>
+                <div class="stamp">
+                  <img src="assets/prepaid-stamp.svg" alt="">
+                  <p class="r" style="left:26px;top:15px">up to</p>
+                  <p class="big">30%</p>
+                  <p class="r" style="left:33px;top:57px">off</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="raf">
+              <div class="left">
+                <div class="top">
+                  <h3>Refer a friend</h3>
+                  <p class="body">Your friend gets 15% off with <b>xxx-xxx</b> - you earn £15 on their first order!</p>
+                </div>
+                <div class="btn-dark">Invite friends</div>
+              </div>
+              <div class="ph">
+                <img class="center heart" src="assets/raf-heart.svg" alt="">
+                <div class="center gift"><img src="assets/raf-gift.png" alt=""></div>
+              </div>
+            </div>
+
+            <div class="lhplus">
+              <div class="left">
+                <p class="h">Laundryheap+</p>
+                <p class="s">Skip the service fee for just £2.99/mo</p>
+                <p class="link">Join now</p>
+              </div>
+              <div class="lh-icon">
+                <div class="lh-plus"><div class="lh-set"><div><img src="assets/lh-set.svg" alt=""></div></div></div>
+                <div class="lh-vec"><img src="assets/lh-vector.svg" alt=""></div>
+                <div class="abs" style="left:calc(50% - 14.2px);top:calc(50% + 24.61px);transform:translate(-50%,-50%);width:17.605px;height:14.772px;display:flex;align-items:center;justify-content:center">
+                  <div class="skew"><div class="promo-ic" style="width:15px;height:15px"><span class="box" style="inset:0 -25.91% -53.32% -25.2%"><img src="assets/lh-promo1.svg" alt=""></span></div></div>
+                </div>
+                <div class="abs" style="right:0.87px;top:calc(50% - 16.86px);transform:translateY(-50%);width:21.126px;height:17.727px;display:flex;align-items:center;justify-content:center">
+                  <div class="skew"><div class="promo-ic" style="width:18px;height:18px"><span class="box" style="inset:0 -24.46% -50.42% -23.75%"><img src="assets/lh-promo2.svg" alt=""></span></div></div>
+                </div>
+                <div class="abs" style="left:0;top:0.18px;width:14.084px;height:11.818px;display:flex;align-items:center;justify-content:center">
+                  <div class="skew"><div class="promo-ic" style="width:12px;height:12px"><span class="box" style="inset:0"><img src="assets/lh-promo3.svg" alt=""></span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Screen: Prices — waiting on designs ===== -->
+    <section class="screen" data-screen="prices" hidden>
+      <div class="todo">
+        <div>
+          <h2>Prices</h2>
+          <p>This screen is coming soon.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Bottom navigation (shared by all tab screens) ===== -->
+    <nav class="navbar">
+      <div class="nav-row">
+        <button class="nav-item" data-go="home" type="button">
+          <span class="ic"><img class="fill ic-active" src="assets/nav-home.svg" alt=""><img class="fill ic-idle" src="assets/nav-home-inactive.svg" alt=""></span>
+          <span class="lbl">Home</span>
+        </button>
+        <button class="nav-item" data-go="prices" type="button">
+          <span class="ic"><img class="fill ic-idle" src="assets/nav-prices.svg" alt=""><span class="mask-ic ic-active" style="--m:url(assets/nav-prices.svg)"></span></span>
+          <span class="lbl">Prices</span>
+        </button>
+        <button class="nav-item" type="button" tabindex="-1">
+          <span class="book"></span>
+          <span class="lbl">Book now</span>
+        </button>
+        <button class="nav-item" type="button" tabindex="-1">
+          <span class="ic"><img class="fill" src="assets/nav-prepaid.svg" alt=""></span>
+          <span class="lbl">Prepaid</span>
+        </button>
+        <button class="nav-item" type="button" tabindex="-1">
+          <span class="ic"><img class="more-dots" src="assets/nav-more.svg" alt=""></span>
+          <span class="lbl">More</span>
+        </button>
+      </div>
+      <div class="home-indicator" aria-hidden="true"></div>
+    </nav>
+
+  </div>
+</div>
+
+<script>
+  // Hash router: each <section data-screen="name"> is reachable at #name. Add new screens the same way.
+  (function () {
+    var screens = document.querySelectorAll('[data-screen]');
+    var tabs = document.querySelectorAll('.nav-item[data-go]');
+    function show() {
+      var name = (location.hash || '#home').slice(1);
+      if (!document.querySelector('[data-screen="' + name + '"]')) name = 'home';
+      screens.forEach(function (s) { s.hidden = s.dataset.screen !== name; });
+      tabs.forEach(function (t) {
+        if (t.dataset.go === name) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current');
+      });
+    }
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { location.hash = t.dataset.go; });
+    });
+    window.addEventListener('hashchange', show);
+    show();
+  })();
+</script>
+</body>
+</html>
