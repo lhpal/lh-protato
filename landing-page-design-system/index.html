@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Landing page design system</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #f7f8fa; --surface: #ffffff; --fg: #1b1f27; --muted: #5d6573; --line: #e1e4ea;
+  --accent: #2d5bd7;
+  --new-bg: #e3f4e8; --new-fg: #1d6b38;
+  --split-bg: #fdf0dc; --split-fg: #8a5300;
+  --rep-bg: #eceff4; --rep-fg: #3c4452;
+  --sans: "Inter", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #12151b; --surface: #1a1e26; --fg: #e6e9ef; --muted: #9aa3b2; --line: #2b313c;
+  --accent: #7ea2ff;
+  --new-bg: #16331f; --new-fg: #8fe0a8;
+  --split-bg: #3a2a10; --split-fg: #f3c27a;
+  --rep-bg: #262c36; --rep-fg: #c3cad6;
+  color-scheme: dark } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.5; }
+button, code, pre { font-family: var(--sans); }
+[hidden] { display: none !important; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
+h1 { font-size: 24px; font-weight: 600; margin: 0 0 4px; text-wrap: balance; }
+.sub { color: var(--muted); margin: 0 0 20px; }
+.bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); }
+.tabs button { font: inherit; font-weight: 500; padding: 7px 16px; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--accent); color: var(--surface); }
+.tabs button:focus-visible, .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--muted); font-size: 13px; }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.chip { display: inline-block; font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.chip.renamed, .chip.merged { background: var(--rep-bg); color: var(--rep-fg); }
+.chip.new { background: var(--new-bg); color: var(--new-fg); }
+.chip.split { background: var(--split-bg); color: var(--split-fg); }
+.counts { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-bottom: 24px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.counts b { color: var(--fg); font-weight: 600; }
+section.tier { margin-bottom: 28px; }
+h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { width: 100%; border-collapse: collapse; min-width: 720px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--bg); }
+td.name { font-size: 13px; font-weight: 500; white-space: nowrap; }
+td.prev { font-size: 12.5px; color: var(--muted); }
+td.props { font-size: 13px; }
+td.props code { font-size: 12.5px; font-weight: 500; }
+.fn { color: var(--muted); font-size: 12px; }
+.notes { font-size: 13px; color: var(--muted); }
+.notes ul { margin: 6px 0 0; padding-left: 18px; }
+.md-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
+.copy { font: inherit; font-weight: 500; padding: 6px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--fg); cursor: pointer; }
+pre { margin: 0; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto;
+  font-size: 12.5px; line-height: 1.55; white-space: pre; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Landing page design system</h1>
+  <p class="sub">Before and after of the B2C landing page component library. Updated 30 Oct 2026.</p>
+
+  <div class="bar">
+    <div class="tabs" role="tablist">
+      <button id="tab-table" role="tab" aria-selected="true">Table</button>
+      <button id="tab-md" role="tab" aria-selected="false">Markdown</button>
+    </div>
+    <div class="legend">
+      <span><i class="chip renamed">Renamed</i> replaces one old component</span>
+      <span><i class="chip merged">Merged</i> replaces several old ones</span>
+      <span><i class="chip split">Split</i> carved out of an old one</span>
+      <span><i class="chip new">New</i> no old version</span>
+    </div>
+  </div>
+
+  <div class="counts" id="counts"></div>
+
+  <div id="view-table"></div>
+
+  <div id="view-md" hidden>
+    <div class="md-head">
+      <span class="fn">Plain Markdown, same content as the table.</span>
+      <button class="copy" id="copy-md">Copy Markdown</button>
+    </div>
+    <pre id="md"></pre>
+  </div>
+</div>
+
+<script>
+// [tier, name, status, previous, property changes]
+const DATA = [
+  ["Atoms", "v2 / Pill", "renamed", "b2c / pills", "none"],
+  ["Atoms", "v2 / Button", "renamed", "b2c / buttons / v2", "type → variant"],
+  ["Atoms", "v2 / Washy", "renamed", "b2c / sticky / washy †", "none"],
+
+  ["Molecules", "v2 / Search", "merged", "b2c / component / search / desktop + mobile", "added breakpoint; button → showButton"],
+  ["Molecules", "v2 / Pagination", "renamed", "b2c / pagination", "excess-page → overflow; on-page → currentPage"],
+  ["Molecules", "v2 / TextBlock", "merged", "b2c / body-blocks / desktop + mobile", "added breakpoint; cta → showCta; icon-pointers + bullet-pointers → pointers=none|icon|bullet; logos, pills unchanged; first variant moved to HeroBlock"],
+  ["Molecules", "v2 / HeroBlock", "split", "b2c / body-blocks (first variant)", "added breakpoint; slot-action holds Button or Search"],
+  ["Molecules", "v2 / Card", "renamed", "b2c / cards", "type4 → feature"],
+
+  ["Organisms", "v2 / Hero", "merged", "b2c / section / hero-A + hero-B", "added breakpoint; added page=home|standard"],
+  ["Organisms", "v2 / LogoStrip", "merged", "b2c / section / logo-strip", "added breakpoint"],
+  ["Organisms", "v2 / MediaSplit", "merged", "b2c / section / style-A", "added breakpoint; image-position → imagePosition; mobile up/down → left/right"],
+  ["Organisms", "v2 / Statement", "merged", "b2c / section / brief", "added breakpoint"],
+  ["Organisms", "v2 / CardGrid", "merged", "b2c / section / article / 1, article / 2, paragraphs", "variants: breakpoint, columns=3|4; booleans: showSubtitle, showCta; slots: slot-cards, slot-cta"],
+  ["Organisms", "v2 / FeatureColumns", "merged", "b2c / section / 3-blurbs", "added breakpoint"],
+  ["Organisms", "v2 / FeatureStrip", "merged", "b2c / section / 3-feature-strip", "added breakpoint"],
+  ["Organisms", "v2 / Teaser", "merged", "b2c / section / feature", "added breakpoint"],
+  ["Organisms", "v2 / TabPanel", "merged", "b2c / section / tabs", "added breakpoint"],
+  ["Organisms", "v2 / PriceList", "merged", "b2c / section / price-service", "added breakpoint"],
+  ["Organisms", "v2 / ComparisonTable", "merged", "b2c / section / table", "added breakpoint"],
+  ["Organisms", "v2 / Quote", "merged", "b2c / section / quote", "added breakpoint"],
+  ["Organisms", "v2 / ReviewList", "merged", "b2c / section / reviews", "added breakpoint"],
+  ["Organisms", "v2 / VideoReel", "merged", "b2c / section / reel", "added breakpoint"],
+  ["Organisms", "v2 / BlogList", "merged", "b2c / section / blogs", "added breakpoint"],
+  ["Organisms", "v2 / AppDownload", "merged", "b2c / section / app-download", "added breakpoint; variant=1|2 → layout=full|compact"],
+  ["Organisms", "v2 / LocationList", "merged", "b2c / section / cities + cities-2 †", "added breakpoint; state=collapsed|expanded + static (from cities-2)"],
+  ["Organisms", "v2 / Faq", "merged", "b2c / section / faq", "added breakpoint"],
+  ["Organisms", "v2 / PromoBanner", "merged", "b2c / section / promo", "added breakpoint"],
+  ["Organisms", "v2 / TextSection", "merged", "b2c / section / paragraph †", "added breakpoint"],
+  ["Organisms", "v2 / Sitemap", "new", "—", "breakpoint=desktop|mobile"],
+  ["Organisms", "v2 / Footer", "new", "—", "breakpoint=desktop|mobile"],
+];
+const LABEL = { renamed: "Renamed", merged: "Merged", split: "Split", new: "New" };
+const TIERS = ["Atoms", "Molecules", "Organisms"];
+const FOOTNOTE = "† Not on the old B2C landing page components page; came from elsewhere in the file.";
+const PARKED = ["Link atom (blue text CTAs stay as plain text)", "TextBlock: one content dropdown instead of logos / pills / pointers"];
+
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const fmtProps = s => esc(s).replace(/([a-zA-Z-]+=[a-z0-9|-]+)/g, "<code>$1</code>");
+
+// counts
+const c = {}; DATA.forEach(r => c[r[2]] = (c[r[2]] || 0) + 1);
+document.getElementById("counts").innerHTML =
+  `<span><b>${DATA.length}</b> components</span>` +
+  TIERS.map(t => `<span>${t}: <b>${DATA.filter(r => r[0] === t).length}</b></span>`).join("") +
+  `<span>Replaced: <b>${(c.renamed||0)+(c.merged||0)}</b></span><span>Split: <b>${c.split||0}</b></span><span>New: <b>${c.new||0}</b></span>`;
+
+// table view
+document.getElementById("view-table").innerHTML = TIERS.map(t => `
+  <section class="tier">
+    <h2>${t}</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>New name</th><th>Status</th><th>Previous name</th><th>Property changes</th></tr></thead>
+      <tbody>${DATA.filter(r => r[0] === t).map(r => `
+        <tr><td class="name">${esc(r[1])}</td><td><span class="chip ${r[2]}">${LABEL[r[2]]}</span></td>
+        <td class="prev">${esc(r[3])}</td><td class="props">${fmtProps(r[4])}</td></tr>`).join("")}
+      </tbody></table></div>
+  </section>`).join("") + `
+  <div class="notes"><p class="fn">${FOOTNOTE}</p>
+  <p><b>Not done, by choice:</b></p><ul>${PARKED.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>`;
+
+// markdown view
+const md = [
+  "# Landing page design system", "",
+  "Before and after of the B2C landing page component library. Updated 30 Oct 2026.", "",
+  "Status key:", "",
+  "- Renamed: replaces one old component",
+  "- Merged: replaces several old ones",
+  "- Split: carved out of an old one",
+  "- New: no old version", "",
+  `${DATA.length} components · ` + TIERS.map(t => `${t}: ${DATA.filter(r => r[0] === t).length}`).join(" · ") + ` · Replaced: ${(c.renamed||0)+(c.merged||0)} · Split: ${c.split||0} · New: ${c.new||0}`, "",
+  ...TIERS.flatMap(t => [
+    `## ${t}`, "",
+    ...DATA.filter(r => r[0] === t).map(r => `- ${r[1]} (${LABEL[r[2]]}) — previous: ${r[3]}. Changes: ${r[4]}`),
+    ""
+  ]),
+  FOOTNOTE, "",
+  "## Not done, by choice", "",
+  ...PARKED.map(p => `- ${p}`), ""
+].join("\n");
+document.getElementById("md").textContent = md;
+
+// tabs
+const tt = document.getElementById("tab-table"), tm = document.getElementById("tab-md");
+const vt = document.getElementById("view-table"), vm = document.getElementById("view-md");
+function show(which) {
+  const isMd = which === "md";
+  tt.setAttribute("aria-selected", String(!isMd)); tm.setAttribute("aria-selected", String(isMd));
+  vt.hidden = isMd; vm.hidden = !isMd;
+}
+tt.onclick = () => show("table"); tm.onclick = () => show("md");
+
+// copy
+const btn = document.getElementById("copy-md");
+btn.onclick = () => {
+  const done = () => { btn.textContent = "Copied"; setTimeout(() => btn.textContent = "Copy Markdown", 1500); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("md"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected, press ⌘C"; };
+  try { navigator.clipboard.writeText(md).then(done, fallback); } catch (e) { fallback(); }
+};
+</script>
+</body>
+</html>
