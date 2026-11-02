@@ -110,7 +110,8 @@ img { display: block; max-width: none; }
 .how-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .how-text .t { font-weight: 600; font-size: 16px; line-height: 21px; }
 .how-text .s { font-weight: 500; font-size: 13px; line-height: 18px; color: var(--dark-gray); }
-.cta-primary { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; border-radius: 4px; background: var(--warm-yellow); color: var(--dark-blue); font-weight: 700; font-size: 16px; line-height: 18px; text-transform: uppercase; }
+.cta-primary { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; border-radius: 4px; background: var(--warm-yellow); color: var(--dark-blue); font-weight: 700; font-size: 16px; line-height: 18px; text-transform: uppercase; border: 0; padding: 0; font-family: inherit; cursor: pointer; }
+.cta-primary:focus-visible { outline: 2px solid var(--dark-blue); outline-offset: 2px; }
 
 /* ---------- Promotions area ---------- */
 .promos { display: flex; flex-direction: column; gap: 24px; padding: 24px 16px; background: var(--white); }
@@ -429,7 +430,7 @@ img { display: block; max-width: none; }
                 </div>
               </div>
             </div>
-            <div class="cta-primary">book first order</div>
+            <button class="cta-primary" type="button" data-goto="book">book first order</button>
           </div>
 
           <div class="promos">
@@ -628,7 +629,7 @@ img { display: block; max-width: none; }
         </div>
 
       <div class="cta-bar">
-        <div class="cta-primary">Book now</div>
+        <button class="cta-primary" type="button" data-goto="book">Book now</button>
         <div class="home-indicator" aria-hidden="true"></div>
       </div>
     </section>
@@ -879,6 +880,10 @@ img { display: block; max-width: none; }
     window.goTo = function (name) { navDepth++; location.hash = name; };
     tabs.forEach(function (t) {
       t.addEventListener('click', function () { window.goTo(t.dataset.go); });
+    });
+    // In-screen buttons that open another screen (e.g. "Book first order" → Select a service)
+    document.querySelectorAll('[data-goto]').forEach(function (b) {
+      b.addEventListener('click', function () { window.goTo(b.dataset.goto); });
     });
     // Back buttons: return to the previous screen in this tab's history, or straight to their target
     document.querySelectorAll('[data-back]').forEach(function (b) {

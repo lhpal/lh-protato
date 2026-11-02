@@ -4,6 +4,13 @@ Live at https://lhpal.github.io/lh-protato/customer-app/
 
 Prices and service copy come from laundryheap.com/en-gb/pricing/<service>/pricelist. Layouts come from the Figma file "[EXT] For Claude".
 
+## 2 Nov 2026: Book buttons linked
+
+**New**
+- **Book first order** on Home opens the Select a service screen.
+- **Book now** at the bottom of Prices & services opens it too.
+- Back returns to the screen you came from.
+
 ## 2 Nov 2026: Book now flow
 
 **New**
