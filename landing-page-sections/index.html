@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Landing page sections</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one calm reading column; intro as two quiet definition lists, then hairline tables per tier */
+:root {
+  --bg: #fbfbfa; --fg: #1a1d24; --muted: #6b7180; --faint: #9ba0ab; --line: #e8e8e4; --soft: #f2f2ef;
+  --accent: #1f2a55;
+  --dot-rep: #9ba0ab; --dot-split: #d9922b; --dot-new: #2f9e5b;
+  --sans: "Inter", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15171c; --fg: #e7e8ec; --muted: #9ba1ad; --faint: #6c7280; --line: #2a2d35; --soft: #1e2128;
+  --accent: #b9c4ff;
+  --dot-rep: #6c7280; --dot-split: #e5a64a; --dot-new: #4cc27c;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15171c; --fg: #e7e8ec; --muted: #9ba1ad; --faint: #6c7280; --line: #2a2d35; --soft: #1e2128;
+  --accent: #b9c4ff;
+  --dot-rep: #6c7280; --dot-split: #e5a64a; --dot-new: #4cc27c;
+  color-scheme: dark }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 14px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+button, code, pre { font-family: var(--sans); }
+[hidden] { display: none !important; }
+.wrap { max-width: 960px; margin: 0 auto; padding-block: 48px 80px;
+  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+
+header { margin-bottom: 40px; }
+h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 6px; text-wrap: balance; }
+.sub { color: var(--muted); margin: 0; }
+
+.label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--faint); margin: 0 0 12px; }
+
+.guide { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px 40px;
+  padding: 16px 20px; background: var(--soft); border-radius: 10px; margin-bottom: 36px; }
+.guide > div { min-width: 0; }
+.guide .label { font-size: 10.5px; margin-bottom: 8px; }
+.guide dl { margin: 0; display: grid; grid-template-columns: 80px 1fr; gap: 3px 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.guide dt { font-weight: 500; }
+.guide dd { margin: 0; color: var(--faint); min-width: 0; }
+.guide code { font-size: 11.5px; background: none; padding: 0; color: var(--muted); }
+
+code { font-size: 12.5px; font-weight: 500; color: var(--fg); background: var(--soft); padding: 1px 5px; border-radius: 4px; white-space: nowrap; }
+
+.bar { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.tabs { display: inline-flex; gap: 2px; padding: 3px; background: var(--soft); border-radius: 8px; }
+.tabs button { font: inherit; font-size: 13px; font-weight: 500; padding: 5px 14px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
+.tabs button:focus-visible, .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--muted); }
+.status { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--dot-rep); flex: none; }
+.status.split::before { background: var(--dot-split); }
+.status.new::before { background: var(--dot-new); }
+
+.counts { font-size: 13px; color: var(--muted); margin: 0 0 36px; font-variant-numeric: tabular-nums; }
+.counts b { color: var(--fg); font-weight: 600; }
+
+section.tier { margin-bottom: 40px; }
+.tier-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+h2 { font-size: 16px; font-weight: 600; margin: 0; }
+.tier-head span { font-size: 13px; color: var(--faint); font-variant-numeric: tabular-nums; }
+.scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 680px; }
+th, td { text-align: left; vertical-align: top; padding: 11px 16px 11px 0; border-bottom: 1px solid var(--line); }
+th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--faint); padding-top: 8px; padding-bottom: 8px; }
+td.name { font-weight: 500; white-space: nowrap; }
+td.st { font-size: 13px; color: var(--muted); }
+td.prev { font-size: 13px; color: var(--muted); }
+td.props { font-size: 13px; line-height: 1.7; }
+td.props code { white-space: normal; }
+.tier-note { font-size: 12.5px; color: var(--muted); margin: 12px 0 0; }
+
+.parked { padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+.parked ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+
+.md-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 24px 0 10px; font-size: 12.5px; color: var(--muted); }
+.copy { font: inherit; font-size: 13px; font-weight: 500; padding: 6px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); cursor: pointer; }
+.copy:hover { background: var(--soft); }
+pre { margin: 0; padding: 20px; background: var(--soft); border-radius: 10px; overflow-x: auto;
+  font-size: 12.5px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--fg); }
+
+@media (max-width: 520px) { .guide dl { grid-template-columns: 1fr; gap: 2px; } .guide dd { margin-bottom: 8px; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Landing page sections</h1>
+    <p class="sub">Before and after of the B2C landing page component library. Updated 30 Oct 2026.</p>
+  </header>
+
+  <div class="guide" id="guide"></div>
+
+  <div class="bar">
+    <div class="tabs" role="tablist">
+      <button id="tab-table" role="tab" aria-selected="true">Table</button>
+      <button id="tab-md" role="tab" aria-selected="false">Markdown</button>
+    </div>
+    <div class="legend">
+      <span class="status">Renamed: replaces one old component</span>
+      <span class="status">Merged: replaces several</span>
+      <span class="status split">Split: carved out of one</span>
+      <span class="status new">New: no old version</span>
+    </div>
+  </div>
+
+  <p class="counts" id="counts"></p>
+
+  <div id="view-table"></div>
+
+  <div id="view-md" hidden>
+    <div class="md-head">
+      <span>Plain Markdown, same content as the table.</span>
+      <button class="copy" id="copy-md">Copy Markdown</button>
+    </div>
+    <pre id="md"></pre>
+  </div>
+</div>
+
+<script>
+// [tier, name, status, previous, property changes]
+const DATA = [
+  ["Atoms", "v2 / Pill", "renamed", "b2c / pills", "none"],
+  ["Atoms", "v2 / Button", "renamed", "b2c / buttons / v2", "type → variant"],
+  ["Atoms", "v2 / Washy", "renamed", "b2c / sticky / washy", "none"],
+
+  ["Molecules", "v2 / Search", "merged", "b2c / component / search / desktop + mobile", "added breakpoint; button → showButton"],
+  ["Molecules", "v2 / Pagination", "renamed", "b2c / pagination", "excess-page → overflow; on-page → currentPage"],
+  ["Molecules", "v2 / TextBlock", "merged", "b2c / body-blocks / desktop + mobile", "added breakpoint; cta → showCta; icon-pointers + bullet-pointers → pointers=none|icon|bullet; logos, pills unchanged; first variant moved to HeroBlock"],
+  ["Molecules", "v2 / HeroBlock", "split", "b2c / body-blocks (first variant)", "added breakpoint; slot-action holds Button or Search"],
+  ["Molecules", "v2 / Card", "renamed", "b2c / cards", "type4 → feature"],
+
+  ["Organisms", "v2 / Hero", "merged", "b2c / section / hero-A + hero-B", "added breakpoint; added page=home|standard"],
+  ["Organisms", "v2 / LogoStrip", "merged", "b2c / section / logo-strip", "added breakpoint"],
+  ["Organisms", "v2 / MediaSplit", "merged", "b2c / section / style-A", "added breakpoint; image-position → imagePosition; mobile up/down → left/right"],
+  ["Organisms", "v2 / Statement", "merged", "b2c / section / brief", "added breakpoint"],
+  ["Organisms", "v2 / CardGrid", "merged", "b2c / section / article / 1, article / 2, paragraphs", "variants: breakpoint, columns=3|4; booleans: showSubtitle, showCta; slots: slot-cards, slot-cta"],
+  ["Organisms", "v2 / FeatureColumns", "merged", "b2c / section / 3-blurbs", "added breakpoint"],
+  ["Organisms", "v2 / FeatureStrip", "merged", "b2c / section / 3-feature-strip", "added breakpoint"],
+  ["Organisms", "v2 / Teaser", "merged", "b2c / section / feature", "added breakpoint"],
+  ["Organisms", "v2 / TabPanel", "merged", "b2c / section / tabs", "added breakpoint"],
+  ["Organisms", "v2 / PriceList", "merged", "b2c / section / price-service", "added breakpoint"],
+  ["Organisms", "v2 / ComparisonTable", "merged", "b2c / section / table", "added breakpoint"],
+  ["Organisms", "v2 / Quote", "merged", "b2c / section / quote", "added breakpoint"],
+  ["Organisms", "v2 / ReviewList", "merged", "b2c / section / reviews", "added breakpoint"],
+  ["Organisms", "v2 / VideoReel", "merged", "b2c / section / reel", "added breakpoint"],
+  ["Organisms", "v2 / BlogList", "merged", "b2c / section / blogs", "added breakpoint"],
+  ["Organisms", "v2 / AppDownload", "merged", "b2c / section / app-download", "added breakpoint; variant=1|2 → layout=full|compact"],
+  ["Organisms", "v2 / LocationList", "merged", "b2c / section / cities + cities-2", "added breakpoint; state=collapsed|expanded + static (from cities-2)"],
+  ["Organisms", "v2 / Faq", "merged", "b2c / section / faq", "added breakpoint"],
+  ["Organisms", "v2 / PromoBanner", "merged", "b2c / section / promo", "added breakpoint"],
+  ["Organisms", "v2 / TextSection", "merged", "b2c / section / paragraph", "added breakpoint"],
+  ["Organisms", "v2 / Sitemap", "new", "—", "breakpoint=desktop|mobile"],
+  ["Organisms", "v2 / Footer", "new", "—", "breakpoint=desktop|mobile"],
+  ["Organisms", "v2 / CtaStrip", "new", "—", "breakpoint=desktop|mobile"],
+];
+const LABEL = { renamed: "Renamed", merged: "Merged", split: "Split", new: "New" };
+const TIERS = ["Atoms", "Molecules", "Organisms"];
+const TIER_NOTES = {
+  Atoms: "Washy: its old version (b2c / sticky / washy) was not on the old B2C landing page components page, so it can't be checked there.",
+  Organisms: "LocationList (the cities-2 part) and TextSection: their old versions were not on the old B2C landing page components page, so they can't be checked there.",
+};
+// [term, description]; text in backticks shows as code
+const GUIDE = [
+  { title: "Atomic design", items: [
+    ["Atoms", "The smallest parts, e.g. Pill, Button, Washy."],
+    ["Molecules", "A few atoms working together, e.g. Search, Card, TextBlock."],
+    ["Organisms", "Full page sections, e.g. Hero, CardGrid, Faq. Also called sections."],
+  ]},
+  { title: "Naming", items: [
+    ["Components", "`v2 / PascalCase`, e.g. `v2 / CardGrid`. The v2 prefix tells developers new from old; the old `b2c /` prefix is dropped."],
+    ["Properties", "camelCase, e.g. `imagePosition`."],
+    ["Values", "One lowercase word or kebab-case, e.g. `special-inverse`."],
+    ["Breakpoints", "Desktop and mobile are one component: `breakpoint=desktop|mobile`."],
+    ["Toggles", "On/off properties start with show, e.g. `showCta`."],
+  ]},
+];
+const PARKED = ["Link atom (blue text CTAs stay as plain text)", "TextBlock: one content dropdown instead of logos / pills / pointers"];
+
+const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const fmtProps = s => esc(s).replace(/([a-zA-Z-]+=[a-z0-9|-]+)/g, "<code>$1</code>");
+const fmtGuide = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+const tierCount = t => DATA.filter(r => r[0] === t).length;
+
+// guide
+document.getElementById("guide").innerHTML = GUIDE.map(g => `
+  <div><p class="label">${g.title}</p><dl>${g.items.map(([k, v]) => `<dt>${k}</dt><dd>${fmtGuide(v)}</dd>`).join("")}</dl></div>`).join("");
+
+// counts
+const c = {}; DATA.forEach(r => c[r[2]] = (c[r[2]] || 0) + 1);
+const replaced = (c.renamed || 0) + (c.merged || 0);
+document.getElementById("counts").innerHTML =
+  `<b>${DATA.length}</b> components: ` + TIERS.map(t => `${tierCount(t)} ${t.toLowerCase()}`).join(", ") +
+  `. <b>${replaced}</b> replaced, <b>${c.split || 0}</b> split, <b>${c.new || 0}</b> new.`;
+
+// table view
+document.getElementById("view-table").innerHTML = TIERS.map(t => `
+  <section class="tier">
+    <div class="tier-head"><h2>${t}</h2><span>${tierCount(t)}</span></div>
+    <div class="scroll"><table>
+      <thead><tr><th>New name</th><th>Status</th><th>Previous name</th><th>Property changes</th></tr></thead>
+      <tbody>${DATA.filter(r => r[0] === t).map(r => `
+        <tr><td class="name">${esc(r[1])}</td><td class="st"><span class="status ${r[2]}">${LABEL[r[2]]}</span></td>
+        <td class="prev">${esc(r[3])}</td><td class="props">${fmtProps(r[4])}</td></tr>`).join("")}
+      </tbody></table></div>
+    ${TIER_NOTES[t] ? `<p class="tier-note">Note: ${esc(TIER_NOTES[t])}</p>` : ""}
+  </section>`).join("") + `
+  <div class="parked"><p class="label">Not done, by choice</p><ul>${PARKED.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>`;
+
+// markdown view
+const md = [
+  "# Landing page sections", "",
+  "Before and after of the B2C landing page component library. Updated 30 Oct 2026.", "",
+  ...GUIDE.flatMap(g => [`## ${g.title}`, "", ...g.items.map(([k, v]) => `- **${k}:** ${v}`), ""]),
+  "## Status key", "",
+  "- Renamed: replaces one old component",
+  "- Merged: replaces several old ones",
+  "- Split: carved out of an old one",
+  "- New: no old version", "",
+  `${DATA.length} components: ` + TIERS.map(t => `${tierCount(t)} ${t.toLowerCase()}`).join(", ") + `. ${replaced} replaced, ${c.split || 0} split, ${c.new || 0} new.`, "",
+  ...TIERS.flatMap(t => [
+    `## ${t}`, "",
+    ...DATA.filter(r => r[0] === t).map(r => `- ${r[1]} (${LABEL[r[2]]}) — previous: ${r[3]}. Changes: ${r[4]}`),
+    "",
+    ...(TIER_NOTES[t] ? [`Note: ${TIER_NOTES[t]}`, ""] : [])
+  ]),
+  "## Not done, by choice", "",
+  ...PARKED.map(p => `- ${p}`), ""
+].join("\n");
+document.getElementById("md").textContent = md;
+
+// tabs
+const tt = document.getElementById("tab-table"), tm = document.getElementById("tab-md");
+const vt = document.getElementById("view-table"), vm = document.getElementById("view-md");
+function show(which) {
+  const isMd = which === "md";
+  tt.setAttribute("aria-selected", String(!isMd)); tm.setAttribute("aria-selected", String(isMd));
+  vt.hidden = isMd; vm.hidden = !isMd;
+}
+tt.onclick = () => show("table"); tm.onclick = () => show("md");
+
+// copy
+const btn = document.getElementById("copy-md");
+btn.onclick = () => {
+  const done = () => { btn.textContent = "Copied"; setTimeout(() => btn.textContent = "Copy Markdown", 1500); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(document.getElementById("md"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected, press ⌘C"; };
+  try { navigator.clipboard.writeText(md).then(done, fallback); } catch (e) { fallback(); }
+};
+</script>
+</body>
+</html>
