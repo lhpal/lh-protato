@@ -37,11 +37,18 @@ h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 6p
 
 .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--faint); margin: 0 0 12px; }
 
-.guide { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px 40px;
-  padding: 16px 20px; background: var(--soft); border-radius: 10px; margin-bottom: 36px; }
-.guide > div { min-width: 0; }
-.guide .label { font-size: 10.5px; margin-bottom: 8px; }
-.guide dl { margin: 0; display: grid; grid-template-columns: 80px 1fr; gap: 3px 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.guide { display: grid; gap: 8px; margin-bottom: 36px; }
+.guide details { min-width: 0; background: var(--soft); border-radius: 10px; padding: 0 20px; }
+.guide summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 12px 0;
+  font-size: 12px; font-weight: 600; color: var(--muted); }
+.guide summary::-webkit-details-marker { display: none; }
+.guide summary::before { content: ""; width: 5px; height: 5px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg); transition: transform .15s ease; }
+.guide details[open] summary::before { transform: rotate(45deg); }
+.guide summary:hover { color: var(--fg); }
+.guide summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { .guide summary::before { transition: none; } }
+.guide dl { padding: 0 0 14px 15px; margin: 0; display: grid; grid-template-columns: 80px 1fr; gap: 3px 12px; font-size: 12px; line-height: 1.5; color: var(--muted); }
 .guide dt { font-weight: 500; }
 .guide dd { margin: 0; color: var(--faint); min-width: 0; }
 .guide code { font-size: 11.5px; background: none; padding: 0; color: var(--muted); }
@@ -171,12 +178,12 @@ const TIER_NOTES = {
 };
 // [term, description]; text in backticks shows as code
 const GUIDE = [
-  { title: "Atomic design", items: [
+  { title: "Atomic file structure", items: [
     ["Atoms", "The smallest parts, e.g. Pill, Button, Washy."],
     ["Molecules", "A few atoms working together, e.g. Search, Card, TextBlock."],
     ["Organisms", "Full page sections, e.g. Hero, CardGrid, Faq. Also called sections."],
   ]},
-  { title: "Naming", items: [
+  { title: "Nomenclature", items: [
     ["Components", "`v2 / PascalCase`, e.g. `v2 / CardGrid`. The v2 prefix tells developers new from old; the old `b2c /` prefix is dropped."],
     ["Properties", "camelCase, e.g. `imagePosition`."],
     ["Values", "One lowercase word or kebab-case, e.g. `special-inverse`."],
@@ -193,7 +200,7 @@ const tierCount = t => DATA.filter(r => r[0] === t).length;
 
 // guide
 document.getElementById("guide").innerHTML = GUIDE.map(g => `
-  <div><p class="label">${g.title}</p><dl>${g.items.map(([k, v]) => `<dt>${k}</dt><dd>${fmtGuide(v)}</dd>`).join("")}</dl></div>`).join("");
+  <details><summary>${g.title}</summary><dl>${g.items.map(([k, v]) => `<dt>${k}</dt><dd>${fmtGuide(v)}</dd>`).join("")}</dl></details>`).join("");
 
 // counts
 const c = {}; DATA.forEach(r => c[r[2]] = (c[r[2]] || 0) + 1);
