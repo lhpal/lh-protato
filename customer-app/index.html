@@ -28,6 +28,8 @@
   --alert-light: #ffe8f6;
   --desk: #e6eaee;
   --shadow: 0 2px 12px rgba(216, 220, 223, 0.4);
+  --app-bg: #f3f3f3;
+  --lighter-yellow: #fff9e8;
   --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-nav: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -111,7 +113,7 @@ img { display: block; max-width: none; }
 .cta-primary { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; border-radius: 4px; background: var(--warm-yellow); color: var(--dark-blue); font-weight: 700; font-size: 16px; line-height: 18px; text-transform: uppercase; }
 
 /* ---------- Promotions area ---------- */
-.promos { display: flex; flex-direction: column; gap: 24px; padding: 24px 16px; background: var(--bg-gray); }
+.promos { display: flex; flex-direction: column; gap: 24px; padding: 24px 16px; background: var(--white); }
 .callout { display: flex; align-items: center; gap: 8px; padding: 16px; border-radius: 8px; background: var(--highlight); }
 .callout .left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 16px; }
 .callout .b { font-weight: 700; }
@@ -319,6 +321,54 @@ img { display: block; max-width: none; }
 .todo { flex: 1; display: grid; place-items: center; padding: 24px; text-align: center; background: var(--bg-gray); }
 .todo h2 { margin: 0 0 8px; font-size: 24px; line-height: 26px; color: var(--dark-blue); }
 .todo p { font-size: 14px; line-height: 20px; color: var(--dark-gray); }
+/* ---------- Select a service (Book now) — Figma 184:1566 ---------- */
+.svc-list { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
+.svc-card { display: flex; align-items: flex-start; gap: 16px; padding: 16px; border: 1px solid var(--app-bg); border-radius: 8px; background: var(--white); box-shadow: var(--shadow); }
+.svc-card .icon { flex: none; width: 40px; height: 40px; }
+.svc-card .mid { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.svc-card .info { display: flex; flex-direction: column; align-items: flex-start; }
+.svc-card .info.spaced { gap: 4px; }
+.svc-card .name { font-weight: 600; font-size: 16px; line-height: 21px; }
+.svc-card .desc { font-size: 14px; line-height: 16px; color: var(--dark-gray); }
+.svc-card .more { font-size: 14px; line-height: 16px; color: var(--light-blue); }
+.svc-card .more:focus-visible { outline: 2px solid var(--light-blue); outline-offset: 2px; border-radius: 2px; }
+.svc-card .radio { flex: none; width: 24px; height: 24px; }
+.info-tag { display: flex; align-items: center; gap: 2px; height: 21px; box-sizing: border-box; padding: 1px 4px; border-radius: 4px; background: var(--app-bg); font-weight: 700; font-size: 12px; line-height: 14px; color: var(--dark-gray); white-space: nowrap; }
+.info-tag .ic { width: 14px; height: 14px; display: grid; place-items: center; }
+.info-tag .ic img { width: 12px; height: 12px; }
+
+/* ---------- Service details sheet ("Prices & more") — Figma 184:1907 ---------- */
+.sheet-layer.details .sheet-scrim { background: rgba(28, 32, 38, 0.8); }
+.sheet.tall { height: 79%; border-radius: 8px 8px 0 0; touch-action: auto; }
+.modal-head { flex: none; display: flex; align-items: center; gap: 16px; min-height: 56px; box-sizing: border-box; padding: 16px; touch-action: none; }
+.modal-head h2 { flex: 1; min-width: 0; margin: 0; font-weight: 500; font-size: 18px; line-height: 23px; }
+.modal-head .sheet-close { margin: -10px; }
+.modal-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.svc-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.pills.sheet-tabs { height: auto; padding: 0 16px; }
+.sheet-pane { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; overscroll-behavior: contain; }
+.sheet-pane::-webkit-scrollbar { display: none; }
+.sheet-pane .subtabs { padding: 18px 16px; }
+.sheet-pane .listing { padding-block: 0; }
+.sheet-pane .listing h2 { padding: 16px 16px 12px; }
+.sheet-pane .listing .item { min-height: 48px; box-sizing: border-box; padding: 8px 16px; }
+/* About tab — Figma 184:2149. Copy from SERVICE_DETAILS (the website), one bullet per sentence */
+.about-tags { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 16px 0; }
+.ro-tag { display: flex; align-items: center; height: 22px; box-sizing: border-box; padding: 4px 8px; border-radius: 4px; background: var(--lighter-yellow); font-weight: 500; font-size: 10px; line-height: 12px; color: var(--dark-gray); text-transform: uppercase; white-space: nowrap; }
+.about-list { display: flex; flex-direction: column; gap: 24px; padding: 16px; }
+.about-sec { display: flex; flex-direction: column; gap: 8px; }
+.about-sec h3 { margin: 0; font-weight: 700; font-size: 14px; line-height: 16px; }
+.about-sec ul { margin: 0; padding-left: 21px; font-size: 14px; line-height: 16px; color: var(--dark-gray); }
+.about-rule { border-top: 1px solid var(--light-gray); }
+/* Wash & Fold prices in the sheet — Figma 184:2340 */
+.wf-prices { display: flex; flex-direction: column; gap: 24px; padding: 16px 16px 24px; }
+.wf-opts { display: flex; flex-direction: column; gap: 16px; }
+.wf-opt { display: flex; flex-direction: column; gap: 8px; }
+.wf-opt h3 { margin: 0; font-weight: 700; font-size: 14px; line-height: 16px; }
+.wf-opt .row { display: flex; align-items: center; gap: 8px; padding-block: 8px; font-size: 14px; line-height: 16px; }
+.wf-opt .row p:first-child { flex: 1; min-width: 0; }
+.wf-opt .row p:last-child { flex: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.wf-note { padding: 16px; border-radius: 8px; background: var(--highlight); font-size: 14px; line-height: 16px; color: var(--dark-gray); }
 </style>
 </head>
 <body>
@@ -592,6 +642,75 @@ img { display: block; max-width: none; }
       <div class="sd-foot"><div class="home-indicator" aria-hidden="true"></div></div>
     </section>
 
+    <!-- ===== Screen: Select a service (Book now) — Figma 184:1566. "Prices & more" opens the service details sheet ===== -->
+    <section class="screen screen-white" data-screen="book" data-nav="false" hidden>
+      <div class="titlebar">
+        <button class="back" type="button" data-back="home" aria-label="Back to home"><img src="assets/chevron-left.svg" alt=""></button>
+        <h1>Select a service</h1>
+      </div>
+      <div class="scroll">
+        <div class="svc-list">
+          <div class="svc-card">
+            <img class="icon" src="assets/sel-wf.svg" alt="">
+            <div class="mid">
+              <div class="info">
+                <p class="name">Wash &amp; Fold</p>
+                <p class="desc">For everyday laundry, bedsheets and towels.</p>
+              </div>
+              <button class="link-btn more" type="button" data-open-sheet="sheet-details" data-sheet-title="Wash &amp; Fold details" data-svc="wf">Prices &amp; more</button>
+            </div>
+            <img class="radio" src="assets/radio.svg" alt="">
+          </div>
+          <div class="svc-card">
+            <img class="icon" src="assets/sel-wi.svg" alt="">
+            <div class="mid">
+              <div class="info">
+                <p class="name">Wash &amp; Iron</p>
+                <p class="desc">For everyday laundry that requires ironing.</p>
+              </div>
+              <button class="link-btn more" type="button" data-open-sheet="sheet-details" data-sheet-title="Wash &amp; Iron details" data-svc="wi">Prices &amp; more</button>
+            </div>
+            <img class="radio" src="assets/radio.svg" alt="">
+          </div>
+          <div class="svc-card">
+            <img class="icon" src="assets/sel-dc.svg" alt="">
+            <div class="mid">
+              <div class="info">
+                <p class="name">Dry Cleaning</p>
+                <p class="desc">For delicate items and fabrics.</p>
+              </div>
+              <button class="link-btn more" type="button" data-open-sheet="sheet-details" data-sheet-title="Dry Cleaning details" data-svc="dc">Prices &amp; more</button>
+            </div>
+            <img class="radio" src="assets/radio.svg" alt="">
+          </div>
+          <div class="svc-card">
+            <img class="icon" src="assets/sel-ir.svg" alt="">
+            <div class="mid">
+              <div class="info">
+                <p class="name">Ironing only</p>
+                <p class="desc">For items that are already clean.</p>
+              </div>
+              <button class="link-btn more" type="button" data-open-sheet="sheet-details" data-sheet-title="Ironing only details" data-svc="ir">Prices &amp; more</button>
+            </div>
+            <img class="radio" src="assets/radio.svg" alt="">
+          </div>
+          <div class="svc-card">
+            <img class="icon" src="assets/sel-du.svg" alt="">
+            <div class="mid">
+              <div class="info spaced">
+                <p class="name">Duvets &amp; Bulky Items</p>
+                <p class="desc">For larger items that require extra care.</p>
+                <span class="info-tag"><span class="ic"><img src="assets/clock.svg" alt=""></span>3 DAY SERVICE</span>
+              </div>
+              <button class="link-btn more" type="button" data-open-sheet="sheet-details" data-sheet-title="Duvets &amp; Bulky Items details" data-svc="du">Prices &amp; more</button>
+            </div>
+            <img class="radio" src="assets/radio.svg" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="sd-foot"><div class="home-indicator" aria-hidden="true"></div></div>
+    </section>
+
     <!-- ===== Bottom navigation (shared by all tab screens) ===== -->
     <nav class="navbar">
       <div class="nav-row">
@@ -603,7 +722,7 @@ img { display: block; max-width: none; }
           <span class="ic"><img class="fill ic-idle" src="assets/nav-prices.svg" alt=""><span class="mask-ic ic-active" style="--m:url(assets/nav-prices.svg)"></span></span>
           <span class="lbl">Prices</span>
         </button>
-        <button class="nav-item" type="button" tabindex="-1">
+        <button class="nav-item" data-go="book" type="button">
           <span class="book"></span>
           <span class="lbl">Book now</span>
         </button>
@@ -618,6 +737,81 @@ img { display: block; max-width: none; }
       </div>
       <div class="home-indicator" aria-hidden="true"></div>
     </nav>
+
+    <!-- ===== Bottom sheet: service details ("Prices & more"), about 75% of the screen. Content per service still to come ===== -->
+    <div class="sheet-layer details" id="sheet-details" hidden>
+      <div class="sheet-scrim" data-close-sheet></div>
+      <div class="sheet tall" role="dialog" aria-modal="true" aria-labelledby="details-title">
+        <div class="modal-head">
+          <h2 id="details-title">Service details</h2>
+          <button class="sheet-close" type="button" data-close-sheet aria-label="Close"><img src="assets/close-modal.svg" alt=""></button>
+        </div>
+        <div class="modal-body">
+          <!-- One body per service, shown by the card's data-svc. Prices from laundryheap.com/en-gb/pricing/<service>/pricelist -->
+          <div class="svc-body" data-svc-body="wf" hidden>
+            <div class="pills sheet-tabs" role="tablist" aria-label="Wash &amp; Fold details">
+              <button class="pill" role="tab" type="button" aria-selected="true" data-pane="prices">Prices</button>
+              <button class="pill" role="tab" type="button" aria-selected="false" data-pane="about">About</button>
+            </div>
+            <div class="sheet-pane" data-pane-body="prices">
+              <div class="wf-prices">
+                <div class="wf-opts">
+                  <div class="wf-opt"><h3>Mixed Wash &amp; Fold</h3><div class="row"><p>All colours washed together.</p><p>£19.50 / 6kg</p></div></div>
+                  <div class="wf-opt"><h3>Separate Wash &amp; Fold</h3><div class="row"><p>Light and dark clothes washed separately.</p><p>£39.00 / 12kg</p></div></div>
+                </div>
+                <p class="wf-note">You can send as much as you need. Each additional kg costs <b>£3.75.</b></p>
+              </div>
+            </div>
+            <div class="sheet-pane" data-pane-body="about" data-about="wf" hidden></div>
+          </div>
+          <div class="svc-body" data-svc-body="wi" hidden>
+            <div class="pills sheet-tabs" role="tablist" aria-label="Wash &amp; Iron details">
+              <button class="pill" role="tab" type="button" aria-selected="true" data-pane="prices">Prices</button>
+              <button class="pill" role="tab" type="button" aria-selected="false" data-pane="about">About</button>
+            </div>
+            <div class="sheet-pane" data-pane-body="prices">
+              <div class="subtabs-wrap"><div class="subtabs" id="wi-sheet-subtabs" aria-label="Categories"></div></div>
+              <div class="listing" id="wi-sheet-list"></div>
+            </div>
+            <div class="sheet-pane" data-pane-body="about" data-about="wi" hidden></div>
+          </div>
+          <div class="svc-body" data-svc-body="dc" hidden>
+            <div class="pills sheet-tabs" role="tablist" aria-label="Dry Cleaning details">
+              <button class="pill" role="tab" type="button" aria-selected="true" data-pane="prices">Prices</button>
+              <button class="pill" role="tab" type="button" aria-selected="false" data-pane="about">About</button>
+            </div>
+            <div class="sheet-pane" data-pane-body="prices">
+              <div class="subtabs-wrap"><div class="subtabs" id="dc-sheet-subtabs" aria-label="Categories"></div></div>
+              <div class="listing" id="dc-sheet-list"></div>
+            </div>
+            <div class="sheet-pane" data-pane-body="about" data-about="dc" hidden></div>
+          </div>
+          <div class="svc-body" data-svc-body="ir" hidden>
+            <div class="pills sheet-tabs" role="tablist" aria-label="Ironing only details">
+              <button class="pill" role="tab" type="button" aria-selected="true" data-pane="prices">Prices</button>
+              <button class="pill" role="tab" type="button" aria-selected="false" data-pane="about">About</button>
+            </div>
+            <div class="sheet-pane" data-pane-body="prices">
+              <div class="subtabs-wrap"><div class="subtabs" id="ir-sheet-subtabs" aria-label="Categories"></div></div>
+              <div class="listing" id="ir-sheet-list"></div>
+            </div>
+            <div class="sheet-pane" data-pane-body="about" data-about="ir" hidden></div>
+          </div>
+          <div class="svc-body" data-svc-body="du" hidden>
+            <div class="pills sheet-tabs" role="tablist" aria-label="Duvets &amp; Bulky Items details">
+              <button class="pill" role="tab" type="button" aria-selected="true" data-pane="prices">Prices</button>
+              <button class="pill" role="tab" type="button" aria-selected="false" data-pane="about">About</button>
+            </div>
+            <div class="sheet-pane" data-pane-body="prices">
+              <div class="subtabs-wrap"><div class="subtabs" id="du-sheet-subtabs" aria-label="Categories"></div></div>
+              <div class="listing" id="du-sheet-list"></div>
+            </div>
+            <div class="sheet-pane" data-pane-body="about" data-about="du" hidden></div>
+          </div>
+        </div>
+        <div class="sheet-foot"><div class="home-indicator" aria-hidden="true"></div></div>
+      </div>
+    </div>
 
     <!-- ===== Bottom sheet: what 6kg looks like (4 slides; "Big armful of clothes" left out on purpose) ===== -->
     <div class="sheet-layer" id="sheet-6kg" hidden>
@@ -735,7 +929,7 @@ img { display: block; max-width: none; }
 
   // Service pager: pill row + swipeable panels kept in sync. Touch swipes natively;
   // mouse users can click a pill, drag either row, or use a trackpad / shift+wheel.
-  document.querySelectorAll('.pills').forEach(function (pills) {
+  document.querySelectorAll('.pills:not(.sheet-tabs)').forEach(function (pills) {
     var pager = pills.parentElement.querySelector('.pager');
     var pillBtns = pills.querySelectorAll('.pill');
     var panels = pager.querySelectorAll('.panel');
@@ -800,8 +994,7 @@ img { display: block; max-width: none; }
       openLayer = layer;
       layer.hidden = false;
       var slides = layer.querySelector('.slides');
-      slides.scrollLeft = 0;
-      slides.dispatchEvent(new Event('scroll'));
+      if (slides) { slides.scrollLeft = 0; slides.dispatchEvent(new Event('scroll')); }
       layer.getBoundingClientRect(); // let the closed position render before animating
       layer.classList.add('open');
     }
@@ -814,50 +1007,65 @@ img { display: block; max-width: none; }
       if (openLayer === layer) openLayer = null;
     }
     document.querySelectorAll('[data-open-sheet]').forEach(function (b) {
-      b.addEventListener('click', function () { open(document.getElementById(b.dataset.openSheet)); });
+      b.addEventListener('click', function () {
+        var layer = document.getElementById(b.dataset.openSheet);
+        if (b.dataset.sheetTitle) layer.querySelector('.modal-head h2').textContent = b.dataset.sheetTitle;
+        open(layer);
+        if (b.dataset.svc) {
+          // Show this service's body, on the Prices tab, scrolled to the top
+          layer.querySelectorAll('[data-svc-body]').forEach(function (body) {
+            body.hidden = body.dataset.svcBody !== b.dataset.svc;
+            if (!body.hidden && body.showPane) body.showPane('prices');
+          });
+        }
+      });
     });
     document.querySelectorAll('.sheet-layer').forEach(function (layer) {
       var sheet = layer.querySelector('.sheet');
       var slides = layer.querySelector('.slides');
-      var dotsEl = layer.querySelector('.dots');
-      var count = slides.children.length;
-      var index = 0;
       layer.querySelectorAll('[data-close-sheet]').forEach(function (el) {
         el.addEventListener('click', function () { close(layer); });
       });
+      if (slides) {
+        var dotsEl = layer.querySelector('.dots');
+        var count = slides.children.length;
+        var index = 0;
 
-      dotsEl.innerHTML = Array.prototype.map.call(slides.children, function (_, i) {
-        return '<button class="dot" type="button" aria-label="Slide ' + (i + 1) + ' of ' + count + '"></button>';
-      }).join('');
-      var dots = dotsEl.querySelectorAll('.dot');
-      function mark(i) {
-        index = i;
-        dots.forEach(function (d, n) { if (n === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+        dotsEl.innerHTML = Array.prototype.map.call(slides.children, function (_, i) {
+          return '<button class="dot" type="button" aria-label="Slide ' + (i + 1) + ' of ' + count + '"></button>';
+        }).join('');
+        var dots = dotsEl.querySelectorAll('.dot');
+        function mark(i) {
+          index = i;
+          dots.forEach(function (d, n) { if (n === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+        }
+        function go(i) {
+          i = Math.max(0, Math.min(count - 1, i));
+          mark(i);
+          slides.scrollTo({ left: i * slides.clientWidth, behavior: 'smooth' });
+        }
+        dots.forEach(function (d, i) { d.addEventListener('click', function () { go(i); }); });
+        slides.addEventListener('scroll', function () {
+          if (!slides.clientWidth || slides.classList.contains('dragging')) return;
+          mark(Math.round(slides.scrollLeft / slides.clientWidth));
+        }, { passive: true });
+        draggable(slides, function (dx) {
+          var w = slides.clientWidth;
+          if (dx < -w * 0.15) go(index + 1); else if (dx > w * 0.15) go(index - 1); else go(index);
+        });
+        layer.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowRight') go(index + 1);
+          if (e.key === 'ArrowLeft') go(index - 1);
+        });
+        mark(0);
       }
-      function go(i) {
-        i = Math.max(0, Math.min(count - 1, i));
-        mark(i);
-        slides.scrollTo({ left: i * slides.clientWidth, behavior: 'smooth' });
-      }
-      dots.forEach(function (d, i) { d.addEventListener('click', function () { go(i); }); });
-      slides.addEventListener('scroll', function () {
-        if (!slides.clientWidth || slides.classList.contains('dragging')) return;
-        mark(Math.round(slides.scrollLeft / slides.clientWidth));
-      }, { passive: true });
-      draggable(slides, function (dx) {
-        var w = slides.clientWidth;
-        if (dx < -w * 0.15) go(index + 1); else if (dx > w * 0.15) go(index - 1); else go(index);
-      });
-      layer.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowRight') go(index + 1);
-        if (e.key === 'ArrowLeft') go(index - 1);
-      });
-      mark(0);
 
       // Drag the sheet down to dismiss (only for vertical drags, so horizontal swipes still change slides)
       var startX, startY, dy = 0, mode = null;
       sheet.addEventListener('pointerdown', function (e) {
         if (e.target.closest('button')) return;
+        // Tall sheets scroll their content, so they only drag down from the header
+        if (sheet.classList.contains('tall') && !e.target.closest('.modal-head')) return;
         startX = e.clientX; startY = e.clientY; dy = 0; mode = 'pending';
       });
       window.addEventListener('pointermove', function (e) {
@@ -935,6 +1143,15 @@ img { display: block; max-width: none; }
         ['bag', 'How you’ll receive the items back', 'We will return your clean items in a bag.']
       ] }
   };
+  // Wash & Fold About tab (sheet): same website copy, bullets grouped as in Figma 184:2365
+  SERVICE_DETAILS.wf.about = [
+    ['overview', 'Service overview', ['Your items are machine washed at 30°C and tumble dried. 60°C can be requested. No ironing is included.', "We price your order based on how much it weighs - no need to worry if it's slightly over."]],
+    SERVICE_DETAILS.wf.items[1],
+    ['suitable', 'Suitable for', [SERVICE_DETAILS.wf.items[2][2]]],
+    SERVICE_DETAILS.wf.items[3],
+    ['prepare', 'How to prepare for collection', [SERVICE_DETAILS.wf.items[4][2]]],
+    ['bag', 'How you’ll receive the items back', [SERVICE_DETAILS.wf.items[5][2]]]
+  ];
   (function () {
     var screen = document.querySelector('[data-screen="service"]');
     var content = document.getElementById('sd-content');
@@ -1020,7 +1237,7 @@ img { display: block; max-width: none; }
 
   // Category list: sticky tab row that jumps to a section, with the underline following the scroll
   function categoryList(tabsEl, listEl, data) {
-    var panel = listEl.closest('.panel');
+    var panel = listEl.closest('.panel, .sheet-pane');
     var esc = function (t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; };
     tabsEl.innerHTML = data.map(function (c, i) {
       return '<button class="subtab" type="button" data-i="' + i + '">' + esc(c[0]) + '</button>';
@@ -1068,6 +1285,41 @@ img { display: block; max-width: none; }
   categoryList(document.getElementById('dc-subtabs'), document.getElementById('dc-list'), DRY_CLEANING);
   categoryList(document.getElementById('ir-subtabs'), document.getElementById('ir-list'), IRONING);
   categoryList(document.getElementById('du-subtabs'), document.getElementById('du-list'), DUVETS);
+  categoryList(document.getElementById('dc-sheet-subtabs'), document.getElementById('dc-sheet-list'), DRY_CLEANING);
+  categoryList(document.getElementById('wi-sheet-subtabs'), document.getElementById('wi-sheet-list'), WASH_IRON);
+  categoryList(document.getElementById('ir-sheet-subtabs'), document.getElementById('ir-sheet-list'), IRONING);
+  categoryList(document.getElementById('du-sheet-subtabs'), document.getElementById('du-sheet-list'), DUVETS);
+
+  // Service details sheet, About tab: tags and sections from SERVICE_DETAILS, one bullet per sentence or list line
+  document.querySelectorAll('[data-about]').forEach(function (pane) {
+    var d = SERVICE_DETAILS[pane.dataset.about];
+    var items = d.about || d.items;
+    var esc = function (t) { var x = document.createElement('div'); x.textContent = t; return x.innerHTML; };
+    function bullets(b) {
+      if (b.options) return '<ul>' + b.options.map(function (o) { return '<li>' + esc(o[0]) + '<br>' + esc(o[1]) + '</li>'; }).join('') + '</ul>';
+      var lines = Array.isArray(b) ? b : typeof b === 'string' ? b.split(/(?<=\.)\s+/) : b.list;
+      return '<ul>' + lines.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>';
+    }
+    pane.innerHTML =
+      '<div class="about-tags">' + d.badges.map(function (b) { return '<span class="ro-tag">' + esc(b) + '</span>'; }).join('') + '</div>' +
+      '<div class="about-list">' + items.map(function (it) {
+        return '<div class="about-sec"><h3>' + esc(it[1]) + '</h3>' + bullets(it[2]) + '</div>';
+      }).join('<div class="about-rule"></div>') + '</div>';
+  });
+
+  // Service details sheet: Prices / About tabs
+  document.querySelectorAll('[data-svc-body]').forEach(function (body) {
+    var pills = body.querySelectorAll('[data-pane]');
+    var panes = body.querySelectorAll('[data-pane-body]');
+    body.showPane = function (name) {
+      pills.forEach(function (p) { p.setAttribute('aria-selected', p.dataset.pane === name ? 'true' : 'false'); });
+      panes.forEach(function (pane) {
+        pane.hidden = pane.dataset.paneBody !== name;
+        pane.scrollTop = 0;
+      });
+    };
+    pills.forEach(function (p) { p.addEventListener('click', function () { body.showPane(p.dataset.pane); }); });
+  });
 </script>
 </body>
 </html>
