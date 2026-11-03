@@ -102,7 +102,7 @@ pre { margin: 0; padding: 20px; background: var(--soft); border-radius: 10px; ov
 <div class="wrap">
   <header>
     <h1>Laundryheap library changelog</h1>
-    <p class="sub">Before and after of the B2C landing page component library. Updated 30 Oct 2026.</p>
+    <p class="sub">Before and after of the B2C landing page component library. Updated 3 Nov 2026.</p>
   </header>
 
   <div class="guide" id="guide"></div>
@@ -139,13 +139,18 @@ const DATA = [
   ["Atoms", "v2 / Pill", "renamed", "b2c / pills", "none"],
   ["Atoms", "v2 / Button", "renamed", "b2c / buttons / v2", "type → variant"],
   ["Atoms", "v2 / Washy", "renamed", "b2c / sticky / washy", "none"],
+  ["Atoms", "v2 / NavLink", "renamed", "b2c / buttons / v2 / link", "active?=true|false → state=default|active"],
+  ["Atoms", "v2 / ServiceStatus", "merged", "b2c / status / working-hours, non-working, service-disruption", "added status=available|closed|disruption (working-hours → available, non-working → closed, service-disruption → disruption)"],
 
   ["Molecules", "v2 / Search", "merged", "b2c / component / search / desktop + mobile", "added breakpoint; button → showButton"],
   ["Molecules", "v2 / Pagination", "renamed", "b2c / pagination", "excess-page → overflow; on-page → currentPage"],
   ["Molecules", "v2 / TextBlock", "merged", "b2c / body-blocks / desktop + mobile", "added breakpoint; cta → showCta; icon-pointers + bullet-pointers → pointers=none|icon|bullet; logos, pills unchanged; first variant moved to HeroBlock"],
   ["Molecules", "v2 / HeroBlock", "split", "b2c / body-blocks (first variant)", "added breakpoint; slot-action holds Button or Search"],
   ["Molecules", "v2 / Card", "renamed", "b2c / cards", "type4 → feature"],
+  ["Molecules", "v2 / SocialProof", "renamed", "b2c / social proof", "none"],
+  ["Molecules", "v2 / FaqItem", "merged", "b2c / faq / desktop + mobile", "added breakpoint; open=true|false unchanged"],
 
+  ["Organisms", "v2 / Navbar", "merged", "b2c / navbar / v2 / desktop + mobile", "added breakpoint; platform=lh|lh-linen → platform=laundryheap|linen; inverse-colours → theme=dark|light (false → dark, true → light); logged-in removed"],
   ["Organisms", "v2 / Hero", "merged", "b2c / section / hero-A + hero-B", "added breakpoint; added page=home|standard"],
   ["Organisms", "v2 / LogoStrip", "merged", "b2c / section / logo-strip", "added breakpoint"],
   ["Organisms", "v2 / MediaSplit", "merged", "b2c / section / style-A", "added breakpoint; image-position → imagePosition; mobile up/down → left/right"],
@@ -163,7 +168,7 @@ const DATA = [
   ["Organisms", "v2 / BlogList", "merged", "b2c / section / blogs", "added breakpoint"],
   ["Organisms", "v2 / AppDownload", "merged", "b2c / section / app-download", "added breakpoint; variant=1|2 → layout=full|compact"],
   ["Organisms", "v2 / LocationList", "merged", "b2c / section / cities + cities-2", "added breakpoint; state=collapsed|expanded + static (from cities-2)"],
-  ["Organisms", "v2 / Faq", "merged", "b2c / section / faq", "added breakpoint"],
+  ["Organisms", "v2 / Faq", "merged", "b2c / section / faq", "added breakpoint; questions now v2 / FaqItem in slot-items"],
   ["Organisms", "v2 / PromoBanner", "merged", "b2c / section / promo", "added breakpoint"],
   ["Organisms", "v2 / TextSection", "merged", "b2c / section / paragraph", "added breakpoint"],
   ["Organisms", "v2 / Sitemap", "new", "—", "breakpoint=desktop|mobile"],
@@ -173,8 +178,9 @@ const DATA = [
 const LABEL = { renamed: "Renamed", merged: "Merged", split: "Split", new: "New" };
 const TIERS = ["Atoms", "Molecules", "Organisms"];
 const TIER_NOTES = {
-  Atoms: "Washy: its old version (b2c / sticky / washy) was not on the old B2C landing page components page, so it can't be checked there.",
-  Organisms: "LocationList (the cities-2 part) and TextSection: their old versions were not on the old B2C landing page components page, so they can't be checked there.",
+  Atoms: "Washy, NavLink and ServiceStatus: their old versions were not on the old B2C landing page components page, so they can't be checked there.",
+  Molecules: "SocialProof and FaqItem: their old versions were not on the old B2C landing page components page, so they can't be checked there.",
+  Organisms: "Navbar, LocationList (the cities-2 part) and TextSection: their old versions were not on the old B2C landing page components page, so they can't be checked there.",
 };
 // [term, description]; text in backticks shows as code
 const GUIDE = [
@@ -226,7 +232,7 @@ document.getElementById("view-table").innerHTML = TIERS.map(t => `
 // markdown view
 const md = [
   "# Laundryheap library changelog", "",
-  "Before and after of the B2C landing page component library. Updated 30 Oct 2026.", "",
+  "Before and after of the B2C landing page component library. Updated 3 Nov 2026.", "",
   ...GUIDE.flatMap(g => [`## ${g.title}`, "", ...g.items.map(([k, v]) => `- **${k}:** ${v}`), ""]),
   "## Status key", "",
   "- Renamed: replaces one old component",
