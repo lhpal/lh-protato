@@ -52,6 +52,10 @@ h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 6p
 .guide dt { font-weight: 500; }
 .guide dd { margin: 0; color: var(--faint); min-width: 0; }
 .guide code { font-size: 11.5px; background: none; padding: 0; color: var(--muted); }
+.guide .log { max-height: 240px; overflow-y: auto; margin: 0 0 14px; padding: 0 0 0 15px; list-style: none; display: grid; gap: 8px; font-size: 12px; line-height: 1.5; }
+.guide .log li { display: grid; grid-template-columns: 80px 1fr; gap: 12px; }
+.guide .log time { font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
+.guide .log span { color: var(--faint); min-width: 0; }
 
 code { font-size: 12.5px; font-weight: 500; color: var(--fg); background: var(--soft); padding: 1px 5px; border-radius: 4px; white-space: nowrap; }
 
@@ -210,6 +214,12 @@ const GUIDE = [
     ["Toggles", "On/off properties start with show, e.g. `showCta`."],
   ]},
 ];
+// library changes, newest first
+const CHANGELOG = [
+  ["2026-11-03", "Added NavLink and ServiceStatus (atoms), SocialProof and FaqItem (molecules) and Navbar (organisms). Faq questions now use FaqItem in slot-items. NavLink gained theme=dark|light."],
+  ["2026-10-30", "First pass: 31 components moved to v2 naming, with desktop and mobile merged into one set. HeroBlock split out of TextBlock; Sitemap, Footer and CtaStrip added as new."],
+];
+const fmtIso = iso => { const [y, m, d] = iso.split("-").map(Number); return `${d} ${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m - 1]} ${y}`; };
 const PARKED = ["Link atom (blue text CTAs stay as plain text)", "TextBlock: one content dropdown instead of logos / pills / pointers"];
 
 const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -218,7 +228,8 @@ const fmtGuide = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
 const tierCount = t => DATA.filter(r => r[0] === t).length;
 
 // guide
-document.getElementById("guide").innerHTML = GUIDE.map(g => `
+document.getElementById("guide").innerHTML = `
+  <details><summary>Changelog</summary><ul class="log">${CHANGELOG.map(([d, t]) => `<li><time datetime="${d}">${fmtIso(d)}</time><span>${esc(t)}</span></li>`).join("")}</ul></details>` + GUIDE.map(g => `
   <details><summary>${g.title}</summary><dl>${g.items.map(([k, v]) => `<dt>${k}</dt><dd>${fmtGuide(v)}</dd>`).join("")}</dl></details>`).join("");
 
 // counts
@@ -246,6 +257,7 @@ document.getElementById("view-table").innerHTML = TIERS.map(t => `
 const md = [
   "# Laundryheap library changelog", "",
   "Before and after of the B2C landing page component library. Updated 3 Nov 2026.", "",
+  "## Changelog", "", ...CHANGELOG.map(([d, t]) => `- **${fmtIso(d)}:** ${t}`), "",
   ...GUIDE.flatMap(g => [`## ${g.title}`, "", ...g.items.map(([k, v]) => `- **${k}:** ${v}`), ""]),
   "## Status key", "",
   "- Renamed: replaces one old component",
