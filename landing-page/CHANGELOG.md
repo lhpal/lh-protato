@@ -1,5 +1,9 @@
 # Landing page – changelog
 
+**This folder is the base version: the source of truth for experiments.**
+Experiments go in their own folders (e.g. `landing-page-<experiment>/`) copied from here, so this page stays unchanged. Only update it when a change is meant to become part of the base.
+The base as of 2026-11-12 is saved as the git tag `landing-page-base-v1` (commit 5cc9cd4).
+
 ## 2026-11-12
 - The header turns white once you scroll past the hero (Figma 203:2541 desktop, 203:2574 mobile). On mobile, "Book" turns light blue.
 - Removed the "Get 15% off on your first order" banner from desktop and mobile.
