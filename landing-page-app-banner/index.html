@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laundryheap – App banner experiment</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+@font-face {
+  font-family: "Founders Grotesk";
+  src: url("assets/FoundersGrotesk-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-display: swap;
+}
+:root {
+  --white: #fff;
+  --deep-black: #1c2026;
+  --dark-gray: #585c62;
+  --medium-gray: #9c9ea3;
+  --light-gray: #d8dcdf;
+  --bg-gray: #f7fafc;
+  --light-blue-bg: #e3f7ff;
+  --medium-blue: #0059c0;
+  --dark-blue: #202b93;
+  --light-blue: #0890f1;
+  --warm-yellow: #ffd06d;
+  --light-yellow: #ffe5ae;
+  --dark-orange: #ffb55d;
+  --dark-pink: #ed738c;
+  --dark-green: #04b4a8;
+  --app-bg: #f3f3f3;
+  --font: "Inter", system-ui, sans-serif;
+  --display: "Founders Grotesk", "Inter", system-ui, sans-serif;
+  --pad: 80px;
+  --max: 1206px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: var(--font); color: var(--deep-black); background: var(--white); -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; cursor: pointer; }
+input { font: inherit; }
+
+/* ---------- shared pieces ---------- */
+.wrap { width: 100%; max-width: calc(var(--max) + var(--pad) * 2); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+.h1 { font-family: var(--display); font-weight: 500; font-size: 72px; line-height: 64px; }
+.h2 { font-family: var(--display); font-weight: 500; font-size: 48px; line-height: 48px; }
+.body { font-size: 16px; line-height: 18px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 24px; border-radius: 12px; background: var(--warm-yellow); color: var(--dark-blue); font-weight: 700; font-size: 16px; line-height: 18px; text-transform: uppercase; white-space: nowrap; transition: filter .15s, transform .1s; }
+.btn:hover { filter: brightness(.96); }
+.btn:active { transform: scale(.98); }
+.dotted { text-decoration: underline dotted; text-underline-position: from-font; text-decoration-skip-ink: none; }
+.icon-circle { flex: none; width: 48px; height: 48px; border-radius: 999px; background: var(--light-blue-bg); display: flex; align-items: center; justify-content: center; }
+.icon-circle img { width: 24px; height: 24px; }
+.pointer { display: flex; gap: 16px; align-items: center; }
+.pointer p { flex: 1; font-size: 16px; line-height: 18px; color: var(--dark-gray); }
+.img-slot { background: #e9edf0; border-radius: 24px; overflow: hidden; }
+.img-slot img { width: 100%; height: 100%; object-fit: cover; }
+.store { display: flex; gap: 8px; align-items: center; }
+.store img { width: 135px; height: 40px; }
+.country { display: inline-flex; gap: 8px; align-items: center; padding: 8px 12px 8px 8px; border: 1px solid var(--light-gray); border-radius: 24px; font-size: 14px; line-height: 16px; color: var(--dark-gray); }
+.country img:first-child { width: 24px; height: 24px; }
+.country img:last-child { width: 16px; height: 16px; }
+.lang { display: flex; gap: 8px; align-items: center; font-size: 14px; line-height: 16px; white-space: nowrap; color: var(--dark-gray); }
+.lang span { color: var(--medium-gray); }
+
+/* ---------- header ---------- */
+.header { position: sticky; top: 0; z-index: 30; background: var(--medium-blue); transition: background-color .2s; }
+.header .on-solid { display: none; }
+/* scrolled past the hero: white header (Figma 203:2541) */
+.header.is-solid { background: var(--white); }
+.header.is-solid .on-solid { display: block; }
+.header.is-solid .on-blue { display: none; }
+.header.is-solid .nav__links a, .header.is-solid .nav__login { color: var(--deep-black); }
+.header.is-solid .nav__book { color: var(--light-blue); } /* Figma 203:2574 */
+.nav { display: flex; align-items: center; gap: 8px; padding-top: 32px; padding-bottom: 32px; }
+.nav__left { display: flex; align-items: center; gap: 80px; height: 48px; }
+.nav__logo { width: 177px; height: 40px; display: flex; align-items: center; }
+.nav__logo img { width: 177px; height: 24px; }
+.nav__links { display: flex; gap: 8px; height: 48px; }
+.nav__links a { display: flex; align-items: center; padding: 16px; font-size: 16px; line-height: 18px; color: var(--white); white-space: nowrap; }
+.nav__links a:hover, .nav__login:hover { text-decoration: underline; }
+.nav__spacer { flex: 1; }
+.nav__right { display: flex; gap: 24px; align-items: center; }
+.nav__login { font-size: 16px; line-height: 21px; color: var(--white); }
+.nav__book, .nav__burger { display: none; }
+
+/* ---------- app download banner (experiment, mobile only) ---------- */
+.appbar, .switcher { display: none; }
+@media (max-width: 899px) {
+  .appbar { display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px 0 4px; background: var(--white); z-index: 40; }
+  .appbar__close { flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--medium-gray); }
+  .appbar__icon { flex: none; width: 48px; height: 48px; border-radius: 12px; background: var(--medium-blue); display: flex; align-items: center; justify-content: center; }
+  .appbar__icon img { width: 27px; height: 24px; }
+  .appbar__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; margin-left: 4px; }
+  .appbar__title { font-weight: 700; font-size: 14px; line-height: 16px; color: var(--deep-black); }
+  .appbar__trust { display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 14px; color: var(--dark-gray); white-space: nowrap; }
+  .appbar__trust .stars img { width: 10px; height: 10px; }
+  .appbar__cta { flex: none; padding: 8px 4px 8px 8px; font-weight: 700; font-size: 14px; line-height: 16px; color: var(--light-blue); }
+
+  /* A: banner takes the header's place at the top */
+  body[data-variant="a"] .appbar { position: sticky; top: 0; box-shadow: 0 2px 12px rgba(28,32,38,.12); }
+  body[data-variant="a"]:not(.appbar-closed) .header { display: none; }
+  /* B: banner fixed to the bottom of the screen */
+  body[data-variant="b"] .appbar { position: fixed; left: 0; right: 0; bottom: 0; box-shadow: 0 -2px 12px rgba(28,32,38,.12); }
+  body[data-variant="b"]:not(.appbar-closed) { padding-bottom: 72px; }
+  body[data-variant="b"]:not(.appbar-closed) .washy { bottom: 96px; }
+  /* C: banner stacked above the header; both stay at the top while scrolling */
+  body[data-variant="c"] .appbar { position: sticky; top: 0; height: 72px; border-bottom: 1px solid #e9edf0; }
+  body[data-variant="c"]:not(.appbar-closed) .header { top: 72px; box-shadow: 0 2px 12px rgba(28,32,38,.12); }
+
+  body.appbar-closed .appbar { display: none; }
+
+  /* prototype-only switch between positions */
+  .switcher { display: flex; gap: 4px; position: fixed; left: 16px; bottom: 28px; z-index: 45; padding: 4px; border-radius: 12px; background: rgba(28,32,38,.8); }
+  .switcher button { width: 32px; height: 32px; border-radius: 8px; font-weight: 700; font-size: 14px; color: var(--white); }
+  .switcher button[aria-pressed="true"] { background: var(--warm-yellow); color: var(--dark-blue); }
+  body[data-variant="b"]:not(.appbar-closed) .switcher { bottom: 100px; }
+  body.no-switcher .switcher { display: none; }
+}
+
+/* ---------- hero ---------- */
+.hero { background: var(--medium-blue); overflow: hidden; }
+.hero__inner { height: 667px; display: flex; gap: 28px; align-items: center; }
+.hero__left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 32px; color: var(--white); }
+.hero__title { display: flex; flex-direction: column; gap: 8px; }
+.hero__status-title { display: flex; flex-direction: column; gap: 24px; }
+.status { display: flex; gap: 8px; align-items: center; font-size: 14px; line-height: 16px; }
+.status__dot { position: relative; width: 16px; height: 16px; flex: none; }
+.status__dot img { position: relative; width: 16px; height: 16px; }
+.status__dot::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #50c600; animation: status-pulse 2s ease-out infinite; }
+@keyframes status-pulse { 0% { transform: scale(.5); opacity: .7; } 100% { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .status__dot::before { animation: none; opacity: 0; } }
+.hero__sub { font-size: 16px; line-height: 21px; }
+.proof { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-weight: 500; font-size: 13px; line-height: 18px; white-space: nowrap; }
+.proof__review, .proof__rating { display: flex; gap: 4px; align-items: center; }
+.faces { display: flex; height: 16px; isolation: isolate; }
+.faces img { width: 16px; height: 16px; border-radius: 999px; border: 1px solid var(--white); object-fit: cover; margin-right: -8px; }
+.faces img:nth-child(1) { z-index: 4; }
+.faces img:nth-child(2) { z-index: 3; transform: scaleX(-1); }
+.faces img:nth-child(3) { z-index: 2; margin-right: 0; }
+.proof__dot { width: 1.847px; height: 1.842px; }
+.stars { display: flex; }
+.stars img { width: 12px; height: 12px; }
+.hero__widget { display: flex; flex-direction: column; gap: 12px; }
+.search { display: flex; gap: 16px; align-items: center; width: 587px; max-width: 100%; height: 78px; padding: 16px; background: var(--white); border-radius: 12px; }
+.search label { flex: 1; min-width: 0; display: flex; gap: 8px; align-items: center; padding: 8px; }
+.search label img { width: 16px; height: 16px; }
+.search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 16px; line-height: 18px; color: var(--deep-black); }
+.search input::placeholder { color: var(--dark-gray); opacity: 1; }
+.search__round { display: none; }
+.hero__offer { font-size: 14px; line-height: 16px; }
+.hero__image { flex: none; width: 591px; height: 587px; position: relative; }
+.hero__art { position: absolute; left: 50%; top: 50%; width: 587px; height: 587px; transform: translate(-50%, -50%); }
+.hero__blob-box { position: absolute; left: 3.46%; top: 19.77%; right: -4.53%; bottom: -2.74%; display: flex; align-items: center; justify-content: center; }
+.hero__blob { width: 538.586px; height: 414.475px; transform: rotate(-8.22deg) skewX(.14deg); flex: none; }
+.hero__photo { position: absolute; left: 10.47%; top: -1.01%; right: .64%; bottom: -6.19%;
+  -webkit-mask: url("assets/hero-mask.svg") no-repeat -10.11px -7.084px / 702.285px 603.281px;
+          mask: url("assets/hero-mask.svg") no-repeat -10.11px -7.084px / 702.285px 603.281px; }
+.hero__photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- logo strip ---------- */
+.logos { background: var(--bg-gray); height: 144px; overflow: hidden; --s: 1; }
+.logos__track { display: flex; width: max-content; padding-top: 32px; padding-left: 40px; animation: marquee 40s linear infinite; }
+.logos:hover .logos__track { animation-play-state: paused; }
+.logos__set { display: flex; gap: calc(40px * var(--s)); padding-right: calc(40px * var(--s)); }
+.logo { width: calc(160px * var(--s)); height: calc(80px * var(--s)); position: relative; overflow: hidden; flex: none; }
+.logo img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(var(--w) * var(--s)); height: calc(var(--h) * var(--s)); object-fit: cover; opacity: .7; }
+.logo--crop span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(138px * var(--s)); height: calc(23.92px * var(--s)); overflow: hidden; }
+.logo--crop span img { position: absolute; left: 0; top: -110.26%; transform: none; width: 100%; height: 320.51%; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .logos__track { animation: none; } .logos { overflow-x: auto; } }
+
+/* ---------- statement ---------- */
+.gray { background: var(--bg-gray); }
+.statement__inner { height: 492px; display: flex; align-items: center; gap: 24px; }
+.statement__title { flex: none; width: 591px; display: flex; flex-direction: column; gap: 16px; }
+.statement__kicker { font-size: 16px; line-height: 18px; color: var(--dark-gray); }
+.statement__title .h1 span { color: var(--medium-blue); display: block; }
+.statement__pointers { width: 591px; display: flex; flex-direction: column; gap: 48px; }
+
+/* ---------- price list ---------- */
+.prices { padding-top: 40px; padding-bottom: 40px; }
+.prices__card { background: var(--dark-blue); border-radius: 24px; min-height: 482px; display: flex; gap: 24px; align-items: center; justify-content: center; padding: 40px 24px; }
+.prices__text { width: 511px; display: flex; flex-direction: column; gap: 8px; color: var(--white); }
+.prices__right { width: 511px; display: flex; flex-direction: column; gap: 32px; }
+.prices__list { display: flex; flex-direction: column; gap: 16px; }
+.svc { display: flex; gap: 16px; align-items: center; padding: 16px; background: var(--white); border-radius: 12px; text-align: left; width: 100%; transition: box-shadow .15s; }
+.svc:hover { box-shadow: 0 2px 12px rgba(0,0,0,.18); }
+.svc__info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.svc__top { display: flex; gap: 8px; align-items: center; }
+.svc__name { font-weight: 600; font-size: 16px; line-height: normal; }
+.svc__price { font-size: 14px; line-height: 16px; }
+.tag { background: var(--light-yellow); border-radius: 4px; padding: 1px 4px; font-weight: 700; font-size: 12px; line-height: 14px; }
+.svc__chev { width: 16px; height: 16px; flex: none; }
+.svc-icon { position: relative; width: 48px; height: 48px; flex: none; }
+.svc-icon > img, .svc-icon > div { position: absolute; }
+.svc-icon > img:first-child { inset: 0; width: 100%; height: 100%; }
+.svc-icon .fill { width: 100%; height: 100%; }
+.svc-icon .contain { width: 100%; height: 100%; object-fit: contain; }
+.svc-icon .cover { width: 100%; height: 100%; object-fit: cover; }
+.prices__explore { font-weight: 700; font-size: 16px; line-height: 18px; color: var(--white); }
+.prices__explore:hover { text-decoration: underline; }
+
+/* ---------- feature strip ---------- */
+.strip { padding-top: 40px; padding-bottom: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.strip .pointer { justify-content: center; }
+.strip .icon-circle { background: var(--white); }
+.strip .pointer p { flex: none; color: var(--deep-black); white-space: nowrap; }
+
+/* ---------- trustpilot ---------- */
+.trust { padding-top: 40px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 40px; align-items: center; }
+.trust__img { width: 100%; aspect-ratio: 1033 / 189; overflow: hidden; position: relative; }
+.trust__img img { width: 100%; height: 100%; object-fit: cover; }
+.trust__cta { width: 386px; display: flex; flex-direction: column; gap: 8px; align-items: stretch; text-align: center; }
+.trust__cta p { font-size: 14px; line-height: 16px; }
+
+/* ---------- media split ---------- */
+.media { padding-top: 40px; padding-bottom: 40px; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.media__text { width: 591px; min-height: 438px; display: flex; flex-direction: column; gap: 32px; justify-content: center; }
+.media__pointers { display: flex; flex-direction: column; gap: 16px; }
+.media .img-slot { flex: none; width: 591px; height: 438px; }
+
+/* ---------- feature columns ---------- */
+.cols { padding-top: 40px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 32px; }
+.cols .h2 { text-align: center; }
+.cols__row { display: flex; gap: 24px; align-items: stretch; }
+.colcard { flex: 1; min-width: 0; background: var(--white); border: 1px solid var(--app-bg); border-radius: 24px; padding: 24px; display: flex; flex-direction: column; gap: 32px; }
+.colcard img { width: 56px; height: 56px; }
+.colcard h3 { font-weight: 700; font-size: 24px; line-height: 24px; min-height: 48px; }
+.colcard p { font-size: 16px; line-height: 18px; color: var(--dark-gray); }
+
+/* ---------- tab panel ---------- */
+.tabs { padding: 40px 16px; display: flex; justify-content: center; }
+.tabs__inner { width: 592px; max-width: 100%; display: flex; flex-direction: column; gap: 32px; align-items: center; }
+.tabs__set { width: 100%; display: flex; flex-direction: column; gap: 32px; }
+.tabs__title { display: flex; flex-direction: column; gap: 8px; align-items: center; text-align: center; }
+.tabs__list { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.tab { padding: 12px 16px; border-radius: 9999px; background: var(--white); color: var(--medium-gray); font-weight: 700; font-size: 14px; line-height: 16px; white-space: nowrap; transition: background .15s, color .15s; }
+.tab[aria-selected="true"] { background: var(--light-blue); color: var(--bg-gray); }
+.tabs__text { min-height: 82px; display: flex; flex-direction: column; gap: 16px; align-items: center; text-align: center; }
+.tabs__text h3 { font-weight: 700; font-size: 24px; line-height: 24px; }
+.tabs__text a { font-weight: 700; font-size: 16px; line-height: 18px; color: var(--light-blue); }
+.tabs .img-slot { width: 100%; height: 438px; }
+
+/* ---------- faq ---------- */
+.faq { padding-top: 40px; padding-bottom: 40px; display: flex; flex-direction: column; gap: 32px; }
+.faq .h2 { text-align: center; }
+.faq__list { display: flex; flex-direction: column; gap: 16px; }
+.faq__item { background: var(--white); border-radius: 8px; box-shadow: 0 1px 4px rgba(216,220,223,.5); }
+.faq__item.open { box-shadow: 0 1px 8px rgba(216,220,223,.5); }
+.faq__q { width: 100%; display: flex; gap: 32px; align-items: flex-start; justify-content: space-between; padding: 24px; text-align: left; font-size: 16px; line-height: 18px; color: var(--deep-black); }
+.faq__q img { width: 24px; height: 24px; flex: none; margin-top: -3px; transition: transform .2s; }
+.faq__item.open .faq__q img { transform: rotate(180deg); }
+.faq__a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }
+.faq__item.open .faq__a { grid-template-rows: 1fr; }
+.faq__a > div { overflow: hidden; }
+.faq__item.open .faq__q { padding-bottom: 16px; }
+.faq__a .txt { padding: 0 80px 24px 24px; font-size: 14px; line-height: 16px; color: var(--dark-gray); }
+.faq__a ul { padding-left: 20px; margin: 4px 0; }
+
+
+/* ---------- app download ---------- */
+.app { padding-top: 40px; padding-bottom: 40px; display: flex; gap: 24px; align-items: flex-start; }
+.app__title { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.app__title p { color: var(--dark-gray); }
+.app__qr { width: 283px; display: flex; flex-direction: column; gap: 16px; align-items: flex-end; }
+.app__qr > img { width: 135px; height: 135px; }
+.app__qr .store { justify-content: flex-end; }
+
+/* ---------- locations ---------- */
+.loc { padding: 40px 16px; text-align: center; }
+.loc p { display: inline; font-weight: 700; font-size: 18px; line-height: 24px; }
+.loc a { color: var(--light-blue); white-space: nowrap; }
+.plus { display: inline-block; position: relative; width: 16px; height: 16px; vertical-align: -2px; margin-left: 8px; }
+.plus::before, .plus::after { content: ""; position: absolute; background: var(--light-blue); }
+.plus::before { left: 43.75%; right: 43.75%; top: 18.75%; bottom: 18.75%; }
+.plus::after { top: 43.75%; bottom: 43.75%; left: 18.75%; right: 18.75%; }
+
+/* ---------- sitemap + footer ---------- */
+.sitemap { padding-top: 40px; padding-bottom: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+.sitemap div { display: flex; flex-direction: column; gap: 24px; font-size: 16px; }
+.sitemap h4 { font-weight: 600; line-height: normal; }
+.sitemap a { line-height: 18px; color: var(--dark-gray); }
+.sitemap a:hover { color: var(--deep-black); }
+.footer { padding-bottom: 40px; display: flex; flex-direction: column; gap: 32px; }
+.footer__divider { height: 1px; background: var(--light-gray); }
+.footer__top { display: flex; justify-content: space-between; align-items: center; }
+.footer__top > * { width: 286px; }
+.footer__logo { height: 40px; display: flex; align-items: center; }
+.footer__logo img { width: 211px; height: 30.907px; }
+.footer__top .store { gap: 16px; }
+.social { display: flex; gap: 16px; justify-content: flex-end; padding: 4px 0; }
+.social img { width: 32px; height: 32px; }
+.footer__bottom { display: flex; gap: 24px; align-items: center; }
+.legal { width: 718px; font-size: 14px; line-height: 16px; color: var(--medium-gray); }
+.legal a { color: var(--dark-gray); }
+.footer__right { flex: 1; display: flex; gap: 24px; align-items: center; justify-content: flex-end; }
+
+/* ---------- washy chat ---------- */
+.washy { position: fixed; right: max(16px, calc((100vw - var(--max)) / 2)); bottom: 24px; z-index: 20; padding: 8px; border-radius: 9999px; background: var(--light-blue-bg); filter: drop-shadow(0 2px 12px rgba(134,149,161,.4)); }
+.washy img { width: 40px; height: 40px; }
+
+/* ---------- mobile menu ---------- */
+.menu { position: fixed; inset: 0; z-index: 50; background: var(--white); display: flex; flex-direction: column; overflow-y: auto; visibility: hidden; opacity: 0; transition: opacity .2s, visibility .2s; }
+.menu.open { visibility: visible; opacity: 1; }
+.menu__bar { flex: none; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.menu__bar > img { width: 177px; height: 24px; }
+.menu__bar-right { display: flex; gap: 16px; align-items: center; }
+.menu__bar-right a { font-weight: 700; font-size: 14px; line-height: 16px; color: var(--light-blue); }
+.menu__bar-right button img { width: 24px; height: 24px; }
+.menu__body { padding: 40px 16px; display: flex; flex-direction: column; gap: 32px; }
+.menu__items { min-height: 295px; display: flex; flex-direction: column; gap: 24px; }
+.menu__items a { font-weight: 600; font-size: 16px; line-height: normal; }
+.menu__extras { display: flex; flex-direction: column; gap: 32px; align-items: center; }
+
+/* ================= MOBILE ================= */
+@media (max-width: 899px) {
+  :root { --pad: 16px; }
+  .h1 { font-size: 48px; line-height: 48px; }
+  .h2 { font-size: 40px; line-height: 40px; }
+
+  .nav { height: 72px; padding: 0 16px; justify-content: space-between; }
+  .nav__left { height: auto; }
+  .nav__logo { height: 24px; }
+  .nav__links, .nav__spacer, .nav__right { display: none; }
+  .nav__book { display: block; font-weight: 700; font-size: 14px; line-height: 16px; color: var(--white); }
+  .nav__burger { display: block; }
+  .nav__burger img { width: 24px; height: 24px; }
+  .nav__mobile-right { display: flex; gap: 16px; align-items: center; }
+
+  .hero__inner { height: auto; padding-top: 40px; padding-bottom: 40px; }
+  .hero__image { display: none; }
+  .proof { max-width: 249px; }
+  .search { width: 100%; height: 72px; padding: 12px 16px; border-radius: 8px; }
+  .search .btn { display: none; }
+  .search__round { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; flex: none; border-radius: 99999px; background: var(--warm-yellow); }
+  .search__round img { width: 24px; height: 24px; }
+  .hero__offer { text-align: center; }
+
+  .logos { height: 72px; --s: .5; }
+  .logos__track { padding-top: 16px; padding-left: 16px; }
+
+  .statement__inner { height: auto; flex-direction: column; align-items: stretch; gap: 32px; padding-top: 40px; padding-bottom: 40px; }
+  .statement__title, .statement__pointers { width: 100%; }
+  .statement__pointers { gap: 16px; }
+
+  .prices__card { flex-direction: column; align-items: stretch; gap: 32px; padding: 24px 16px; min-height: 0; }
+  .prices__text, .prices__right { width: 100%; }
+  .svc { border-radius: 8px; }
+  .prices { min-height: 736px; display: flex; flex-direction: column; justify-content: center; }
+  .prices__explore { text-align: center; }
+
+  .strip { grid-template-columns: 1fr; gap: 16px; }
+  .strip .pointer { justify-content: flex-start; }
+
+  .trust { padding-left: 0; padding-right: 0; gap: 32px; }
+  .trust__img { aspect-ratio: 375 / 169; }
+  .trust__img img { position: absolute; width: 275.47%; height: 111.83%; left: -87.73%; top: 0; object-fit: fill; }
+  .trust__cta { width: 203px; gap: 16px; }
+
+  .media { flex-direction: column; align-items: stretch; gap: 32px; }
+  .media__text { width: 100%; min-height: 0; }
+  .media .img-slot { width: 100%; height: 255px; }
+
+  .cols__row { flex-direction: column; gap: 16px; }
+  .colcard { padding: 16px; gap: 16px; }
+  .colcard img { width: 40px; height: 40px; }
+  .colcard h3 { font-size: 18px; min-height: 0; }
+  .colcard p { letter-spacing: -.16px; }
+
+  .tabs__inner { width: 343px; }
+  .tabs__text { min-height: 106px; }
+  .tabs__text h3 { font-size: 18px; }
+  .tabs .img-slot { height: 256px; }
+
+  .faq__q { padding: 16px; gap: 8px; font-size: 14px; line-height: 16px; align-items: center; }
+  .faq__item.open .faq__q { align-items: flex-start; }
+  .faq__item.open .faq__q { padding-bottom: 16px; }
+  .faq__a .txt { padding: 0 48px 16px 16px; }
+
+
+  .app { flex-direction: column; gap: 32px; }
+  .app__qr { width: 100%; align-items: flex-start; }
+  .app__qr > img { display: none; }
+  .app__qr .store { justify-content: flex-start; }
+
+  .loc { text-align: left; min-height: 128px; }
+
+  .sitemap { grid-template-columns: 1fr 1fr; gap: 24px 16px; }
+  .footer { align-items: center; text-align: center; }
+  .footer__divider { align-self: stretch; }
+  .footer__top { flex-direction: column; gap: 24px; }
+  .footer__top > * { width: auto; }
+  .footer__logo { justify-content: center; }
+  .footer__top .store { justify-content: center; }
+  .social { justify-content: center; }
+  .footer__bottom { flex-direction: column; gap: 32px; }
+  .legal { width: auto; }
+  .footer__right { flex-direction: column; gap: 32px; }
+}
+@media (min-width: 900px) {
+  .nav__mobile-right { display: none; }
+  .menu { display: none; }
+}
+@media (min-width: 900px) and (max-width: 1279px) {
+  :root { --pad: 40px; }
+  .hero__image { width: 46%; }
+  .hero__art { transform: translate(-50%, -50%) scale(.85); }
+  .statement__title, .statement__pointers, .media__text { width: auto; flex: 1; }
+  .media .img-slot { width: 48%; }
+  .prices__text, .prices__right { width: auto; flex: 1; }
+  .h1 { font-size: 60px; line-height: 56px; }
+  .strip .pointer p { white-space: normal; }
+  .footer__top > * { width: auto; }
+  .legal { width: auto; flex: 1; }
+}
+</style>
+</head>
+<body data-variant="a">
+
+<div class="appbar" role="region" aria-label="Get the app">
+  <button class="appbar__close" type="button" aria-label="Close"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+  <div class="appbar__icon"><img src="assets/heart-yellow.svg" alt=""></div>
+  <div class="appbar__text">
+    <div class="appbar__title">It’s just better on the app</div>
+    <div class="appbar__trust"><span class="stars"><img src="assets/star1.svg" alt=""><img src="assets/star2.svg" alt=""><img src="assets/star3.svg" alt=""><img src="assets/star4.svg" alt=""><img src="assets/star5.svg" alt=""></span>4.7 rating</div>
+    <div class="appbar__trust">400k+ happy customers</div>
+  </div>
+  <a class="appbar__cta">Install</a>
+</div>
+
+<header class="header">
+  <nav class="wrap nav" aria-label="Main">
+    <div class="nav__left">
+      <a class="nav__logo" aria-label="Laundryheap home"><img class="on-blue" src="assets/lh-logo-white.svg" alt="Laundryheap"><img class="on-solid" src="assets/lh-logo-dark.svg" alt="Laundryheap"></a>
+      <div class="nav__links">
+        <a>How it works</a>
+        <a>Prices &amp; services</a>
+        <a>About us</a>
+        <a>For business</a>
+      </div>
+    </div>
+    <div class="nav__spacer"></div>
+    <div class="nav__right">
+      <a class="nav__login">Log in</a>
+      <a class="btn">Schedule pickup</a>
+    </div>
+    <div class="nav__mobile-right">
+      <a class="nav__book">Book</a>
+      <button class="nav__burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><img class="on-blue" src="assets/hamburger-white.svg" alt=""><img class="on-solid" src="assets/hamburger-dark.svg" alt=""></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero__inner">
+      <div class="hero__left">
+        <div class="hero__title">
+          <div class="hero__status-title">
+            <div class="status"><span class="status__dot"><img src="assets/status.svg" alt=""></span>Pickup available in 45 minutes</div>
+            <h1 class="h1">Live more, laundry less</h1>
+          </div>
+          <p class="hero__sub">You do the living, we'll do the laundry. We collect, clean &amp; return clothes in 24h.</p>
+        </div>
+        <div class="proof">
+          <div class="proof__review">
+            <div class="faces"><img src="assets/face1.png" alt=""><img src="assets/face2.png" alt=""><img src="assets/face3.png" alt=""></div>
+            Trusted by 400k+ customers
+          </div>
+          <img class="proof__dot" src="assets/dot.svg" alt="">
+          <div class="proof__rating">
+            <div class="stars"><img src="assets/star1.svg" alt=""><img src="assets/star2.svg" alt=""><img src="assets/star3.svg" alt=""><img src="assets/star4.svg" alt=""><img src="assets/star5.svg" alt=""></div>
+            4.7 rating
+          </div>
+        </div>
+        <div class="hero__widget">
+          <form class="search" onsubmit="return false">
+            <label><img src="assets/pin.svg" alt=""><input type="text" placeholder="Enter your postcode" aria-label="Enter your postcode" autocomplete="postal-code"></label>
+            <button class="btn" type="submit">Schedule pickup</button>
+            <button class="search__round" type="submit" aria-label="Schedule pickup"><img src="assets/search-btn-icon.svg" alt=""></button>
+          </form>
+          <p class="hero__offer">Get 15% discount on your first order!</p>
+        </div>
+      </div>
+      <div class="hero__image" aria-hidden="true">
+        <div class="hero__art">
+          <div class="hero__blob-box"><img class="hero__blob" src="assets/hero-blob.svg" alt=""></div>
+          <div class="hero__photo"><img src="assets/hero-photo.png" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="logos" aria-label="As seen in">
+    <div class="logos__track">
+      <div class="logos__set">
+        <div class="logo"><img src="assets/logo-dailymail.png" alt="Daily Mail" style="--w:138px;--h:23.863px;opacity:.5"></div>
+        <div class="logo"><img src="assets/logo-skynews.png" alt="Sky News" style="--w:138px;--h:33.35px"></div>
+        <div class="logo"><img src="assets/logo-timeout.png" alt="Time Out Dubai" style="--w:78px;--h:50.87px"></div>
+        <div class="logo"><img src="assets/logo-msn.png" alt="MSN" style="--w:138px;--h:77.625px"></div>
+        <div class="logo"><img src="assets/logo-express.png" alt="Daily Express" style="--w:138px;--h:19.872px"></div>
+        <div class="logo"><img src="assets/logo-independent.png" alt="The Independent" style="--w:138px;--h:11.624px"></div>
+        <div class="logo"><img src="assets/logo-sun.png" alt="The Sun" style="--w:138px;--h:59.8px"></div>
+        <div class="logo"><img src="assets/logo-yahoo.png" alt="Yahoo" style="--w:138px;--h:77.625px"></div>
+        <div class="logo logo--crop"><span><img src="assets/logo-womanhome.png" alt="Woman &amp; Home" style="opacity:.7"></span></div>
+        <div class="logo"><img src="assets/logo-mirror.png" alt="Daily Mirror" style="--w:138px;--h:43.844px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gray" id="how-it-works">
+    <div class="wrap statement__inner">
+      <div class="statement__title">
+        <p class="statement__kicker">How it works</p>
+        <h2 class="h1">Book it. Bag it. <span>And relax...</span></h2>
+      </div>
+      <div class="statement__pointers">
+        <div class="pointer"><span class="icon-circle"><img src="assets/clock.svg" alt=""></span><p>Pack your laundry and schedule a pickup for when it suits you</p></div>
+        <div class="pointer"><span class="icon-circle"><img src="assets/van.svg" alt=""></span><p>We collect your laundry and carefully clean it at our local facilities</p></div>
+        <div class="pointer"><span class="icon-circle"><img src="assets/cloth.svg" alt=""></span><p>Relax while we clean and deliver your items fresh to your doorstep</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gray">
+    <div class="wrap prices">
+      <div class="prices__card">
+        <div class="prices__text">
+          <h2 class="h1">High-end cleaning.<br>High street price.</h2>
+          <p class="body">We pick up, clean, and deliver your laundry all for less than you'd spend at the local cleaners</p>
+        </div>
+        <div class="prices__right">
+          <div class="prices__list">
+            <a class="svc">
+              <span class="svc-icon">
+                <img src="assets/svc-wash-bg.svg" alt="">
+                <div style="inset:8.98% 10.07% 9.03% 10.32%"><img class="contain" src="assets/svc-layer0.png" alt=""></div>
+                <div style="inset:47.39% 29.15% 29.5% 6.8%"><img class="fill" src="assets/svc-wash-union.svg" alt=""></div>
+              </span>
+              <span class="svc__info">
+                <span class="svc__top"><span class="svc__name">Wash &amp; Fold</span><span class="tag">POPULAR</span></span>
+                <span class="svc__price">from £2.99/kg</span>
+              </span>
+              <img class="svc__chev" src="assets/chevron-right.svg" alt="">
+            </a>
+            <a class="svc">
+              <span class="svc-icon">
+                <img src="assets/svc-washiron-bg.svg" alt="">
+                <div style="inset:9.03% 10.17% 8.98% 10.22%"><img class="contain" src="assets/svc-layer0.png" alt=""></div>
+                <div style="inset:54.12% 31.38% 22.78% 4.57%"><img class="fill" src="assets/svc-waves.svg" alt=""></div>
+                <div style="inset:22.78% 43.95% 48.34% 17.34%"><img class="fill" src="assets/svc-iron.svg" alt=""></div>
+              </span>
+              <span class="svc__info">
+                <span class="svc__top"><span class="svc__name">Wash &amp; Iron</span></span>
+                <span class="svc__price">from £1.95</span>
+              </span>
+              <img class="svc__chev" src="assets/chevron-right.svg" alt="">
+            </a>
+            <a class="svc">
+              <span class="svc-icon">
+                <img src="assets/svc-dry-bg.svg" alt="">
+                <div style="inset:-3.47% 19.85% 8.34% 19.85%"><img class="cover" src="assets/svc-layer14.png" alt=""></div>
+                <div style="inset:30.42% 37.5% 25.87% 3.97%"><img class="fill" src="assets/svc-dry-union.svg" alt=""></div>
+              </span>
+              <span class="svc__info">
+                <span class="svc__top"><span class="svc__name">Dry Cleaning</span></span>
+                <span class="svc__price">from £1.95</span>
+              </span>
+              <img class="svc__chev" src="assets/chevron-right.svg" alt="">
+            </a>
+          </div>
+          <a class="prices__explore">Explore all services →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gray">
+    <div class="wrap strip">
+      <div class="pointer"><span class="icon-circle"><img src="assets/van-strip.svg" alt=""></span><p>Free pickup &amp; delivery</p></div>
+      <div class="pointer"><span class="icon-circle"><img src="assets/star-outline.svg" alt=""></span><p>Satisfaction guaranteed</p></div>
+      <div class="pointer"><span class="icon-circle"><img src="assets/eco.svg" alt=""></span><p>Eco-friendly cleaning</p></div>
+    </div>
+  </section>
+
+  <section class="gray">
+    <div class="wrap trust">
+      <div class="trust__img"><img src="assets/trustpilot.png" alt="Rated Great on Trustpilot, based on 13,265 reviews"></div>
+      <div class="trust__cta">
+        <a class="btn">Schedule pickup</a>
+        <p>or <a class="dotted">read our customer’s reviews</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="gray">
+    <div class="wrap media">
+      <div class="media__text">
+        <h2 class="h2">Stay in control of your orders</h2>
+        <div class="media__pointers">
+          <div class="pointer"><span class="icon-circle"><img src="assets/bell.svg" alt=""></span><p>Receive instant order updates</p></div>
+          <div class="pointer"><span class="icon-circle"><img src="assets/van.svg" alt=""></span><p>Track drivers in real time</p></div>
+          <div class="pointer"><span class="icon-circle"><img src="assets/clock.svg" alt=""></span><p>Easily reschedule your delivery</p></div>
+        </div>
+      </div>
+      <div class="img-slot" data-slot="stay-in-control"><!-- image to come --></div>
+    </div>
+  </section>
+
+  <section class="gray">
+    <div class="wrap cols">
+      <h2 class="h2">A laundry service you can count on</h2>
+      <div class="cols__row">
+        <div class="colcard"><img src="assets/smile.svg" alt=""><h3 style="color:var(--dark-orange)">400k+ happy customers</h3><p>We've ticked laundry off the to-do list for 400k+ customers</p></div>
+        <div class="colcard"><img src="assets/heart.svg" alt=""><h3 style="color:var(--dark-pink)">10+ years expertise</h3><p>More than 11 years of high quality cleaning</p></div>
+        <div class="colcard"><img src="assets/earth.svg" alt=""><h3 style="color:var(--dark-green)">18 countries</h3><p>A global reputation built on trust, reliability and consistency</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gray tabs">
+    <div class="tabs__inner">
+      <div class="tabs__set">
+        <div class="tabs__title">
+          <h2 class="h2">Let us lighten the load</h2>
+          <div class="tabs__list" role="tablist" aria-label="Who it's for">
+            <button class="tab" role="tab" type="button" aria-selected="true" data-tab="families">Families</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" data-tab="professionals">Professionals</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" data-tab="businesses">Businesses</button>
+          </div>
+        </div>
+        <div class="tabs__text" role="tabpanel">
+          <h3 data-panel-text>Spend time with loved ones, not laundry</h3>
+          <a data-panel-link hidden>Check Laundryheap Business</a>
+        </div>
+      </div>
+      <div class="img-slot" data-panel-img data-slot="families"><!-- image to come --></div>
+    </div>
+  </section>
+
+  <section class="gray">
+    <div class="wrap faq">
+      <h2 class="h2">Have any questions?<br>We're here to help.</h2>
+      <div class="faq__list">
+        <div class="faq__item open">
+          <button class="faq__q" type="button" aria-expanded="true">How does Laundryheap work in the UK?<img src="assets/chevron-down.svg" alt=""></button>
+          <div class="faq__a"><div><div class="txt">After your items are collected by our driver, they are taken to one of our trusted partner facilities and washed with utmost care. We take pride in supporting local businesses and minimizing the carbon emissions from transport.</div></div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" type="button" aria-expanded="false">What services does Laundryheap offer in the UK?<img src="assets/chevron-down.svg" alt=""></button>
+          <div class="faq__a"><div><div class="txt">We offer:<ul><li>Wash &amp; fold</li><li>Dry cleaning</li><li>Ironing</li><li>Laundry for hotels &amp; businesses</li><li>Express laundry services</li></ul>Availability may vary slightly by city.</div></div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" type="button" aria-expanded="false">How much does laundry cost in the UK?<img src="assets/chevron-down.svg" alt=""></button>
+          <div class="faq__a"><div><div class="txt">Pricing depends on the service type and location. Exact prices can be viewed before confirming your order, with no hidden fees.</div></div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" type="button" aria-expanded="false">Is Laundryheap safe and reliable?<img src="assets/chevron-down.svg" alt=""></button>
+          <div class="faq__a"><div><div class="txt">Yes. All garments are cleaned by vetted local professionals and handled with care. Thousands of customers across the United Kingdom trust Laundryheap for regular laundry and dry cleaning.</div></div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" type="button" aria-expanded="false">Can tourists or short-term visitors use Laundryheap?<img src="assets/chevron-down.svg" alt=""></button>
+          <div class="faq__a"><div><div class="txt">Absolutely. Laundryheap is ideal for:<ul><li>Tourists</li><li>Business travellers</li><li>Hotel guests</li><li>Short-term renters</li></ul>You can book without a local contract or subscription.</div></div></div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__q" type="button" aria-expanded="false">Do you offer laundry services for hotels or businesses?<img src="assets/chevron-down.svg" alt=""></button>
+          <div class="faq__a"><div><div class="txt">Yes. Laundryheap provides commercial laundry services for:<ul><li>Hotels</li><li>Airbnbs</li><li>Restaurants</li><li>Gyms</li><li>Corporate offices</li></ul>You can request a custom quote for bulk or recurring orders.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section>
+    <div class="wrap app">
+      <div class="app__title">
+        <h2 class="h2">Get laundry done on the go</h2>
+        <p class="body">Also available on iOS or Android</p>
+      </div>
+      <div class="app__qr">
+        <img src="assets/download-qr.svg" alt="QR code to download the app">
+        <div class="store"><a><img src="assets/app-store.png" alt="Download on the App Store"></a><a><img src="assets/google-play.png" alt="Get it on Google Play"></a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="loc">
+    <p>Laundryheap is available in 14 cities around you. <a>See which<span class="plus" aria-hidden="true"></span></a></p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap sitemap">
+    <div><h4>Explore</h4><a>How it works</a><a>Prices &amp; services</a><a>Help centre</a><a>Locations</a><a>Customer reviews</a><a>Sustainability</a><a>Save with us</a></div>
+    <div><h4>Our solutions</h4><a>Airbnb laundry</a><a>Laundry</a><a>Dry cleaning</a><a>Dry cleaners</a><a>Laundromats &amp; launderette</a><a>Hotel laundry</a><a>Broken washing machine?</a><a>Student discounts</a></div>
+    <div><h4>Our company</h4><a>About Laundryheap</a><a>In the news</a><a>Blog</a><a>Careers</a><a>Partner drivers</a><a>Cleaning partners</a></div>
+    <div><h4>For business</h4><a>Hotels partnerships</a><a>Brand partnerships</a><a>Laundry for business</a></div>
+  </div>
+  <div class="wrap footer">
+    <div class="footer__divider"></div>
+    <div class="footer__top">
+      <div class="footer__logo"><img src="assets/logo-main.svg" alt="Laundryheap"></div>
+      <div class="store"><a><img src="assets/app-store.png" alt="Download on the App Store"></a><a><img src="assets/google-play.png" alt="Get it on Google Play"></a></div>
+      <div class="social"><a><img src="assets/facebook.png" alt="Facebook"></a><a><img src="assets/instagram.png" alt="Instagram"></a><a><img src="assets/linkedin.png" alt="LinkedIn"></a></div>
+    </div>
+    <div class="footer__bottom">
+      <p class="legal">By visiting this page you agree to our <a class="dotted">privacy policy</a> and <a class="dotted">terms &amp; conditions</a> · <a class="dotted">Privacy &amp; Cookie settings</a><br><br>© Laundryheap 2026</p>
+      <div class="footer__right">
+        <a class="country"><img src="assets/flag-uk.png" alt="">United Kingdom<img src="assets/chevron-down-16.svg" alt=""></a>
+        <div class="lang"><a class="dotted">English</a><span>·</span><a class="dotted">Español</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a class="washy" aria-label="Chat with Washy"><img src="assets/washy.svg" alt=""></a>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <div class="menu__bar">
+    <img src="assets/lh-logo-dark.svg" alt="Laundryheap">
+    <div class="menu__bar-right">
+      <a>Book</a>
+      <button type="button" class="menu__close" aria-label="Close menu"><img src="assets/hamburger-dark.svg" alt=""></button>
+    </div>
+  </div>
+  <div class="menu__body">
+    <nav class="menu__items" aria-label="Mobile">
+      <a>How it works</a><a>Pricing &amp; Services</a><a>About us</a><a>For business</a><a>Log in</a>
+    </nav>
+    <div class="menu__extras">
+      <div class="store"><a><img src="assets/app-store.png" alt="Download on the App Store"></a><a><img src="assets/google-play.png" alt="Get it on Google Play"></a></div>
+      <a class="country"><img src="assets/flag-uk.png" alt="">United Kingdom<img src="assets/chevron-down-16.svg" alt=""></a>
+      <div class="lang"><a class="dotted">English</a><span>·</span><a class="dotted">Español</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="switcher" role="group" aria-label="Banner position">
+  <button type="button" data-v="a" aria-pressed="true">A</button>
+  <button type="button" data-v="b" aria-pressed="false">B</button>
+  <button type="button" data-v="c" aria-pressed="false">C</button>
+</div>
+
+<script>
+// app banner experiment: ?v=a|b|c picks the position, ?switcher=off hides the switch
+(function () {
+  var params = new URLSearchParams(location.search);
+  if (params.get('switcher') === 'off') document.body.classList.add('no-switcher');
+  function setVariant(v) {
+    if (!/^[abc]$/.test(v)) v = 'a';
+    document.body.dataset.variant = v;
+    document.body.classList.remove('appbar-closed');
+    document.querySelectorAll('.switcher button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.v === v)); });
+    params.set('v', v);
+    history.replaceState(null, '', '?' + params.toString());
+    if (window.header) updateHeader();
+  }
+  document.querySelectorAll('.switcher button').forEach(function (b) {
+    b.addEventListener('click', function () { setVariant(b.dataset.v); });
+  });
+  document.querySelector('.appbar__close').addEventListener('click', function () {
+    document.body.classList.add('appbar-closed');
+    if (window.header) updateHeader();
+  });
+  setVariant(params.get('v') || 'a');
+})();
+
+// Logo strip: duplicate the set so the marquee loops seamlessly
+(function () {
+  var track = document.querySelector('.logos__track');
+  var set = track.querySelector('.logos__set');
+  var copy = set.cloneNode(true);
+  copy.setAttribute('aria-hidden', 'true');
+  track.appendChild(copy);
+})();
+
+// FAQ accordion: one open at a time
+document.querySelectorAll('.faq__q').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var item = btn.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq__item').forEach(function (i) {
+      i.classList.remove('open');
+      i.querySelector('.faq__q').setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }
+  });
+});
+
+// Tabs (headlines from laundryheap.com/en-gb)
+var PANELS = {
+  families: { text: 'Spend time with loved ones, not laundry' },
+  professionals: { text: 'Make laundry our job while you focus on yours' },
+  businesses: { text: 'Losing time doing laundry? Try our commercial services', link: true }
+};
+var panelText = document.querySelector('[data-panel-text]');
+var panelLink = document.querySelector('[data-panel-link]');
+var panelImg = document.querySelector('[data-panel-img]');
+document.querySelectorAll('.tab').forEach(function (tab) {
+  tab.addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach(function (t) { t.setAttribute('aria-selected', String(t === tab)); });
+    var p = PANELS[tab.dataset.tab];
+    panelText.textContent = p.text;
+    panelLink.hidden = !p.link;
+    panelImg.dataset.slot = tab.dataset.tab;
+  });
+});
+
+// Mobile menu
+var menu = document.getElementById('menu');
+// header turns white once it has scrolled past the hero
+var header = document.querySelector('.header');
+var hero = document.querySelector('.hero');
+function updateHeader() {
+  header.classList.toggle('is-solid', hero.getBoundingClientRect().bottom <= header.getBoundingClientRect().bottom);
+}
+addEventListener('scroll', updateHeader, { passive: true });
+addEventListener('resize', updateHeader);
+updateHeader();
+
+var burger = document.querySelector('.nav__burger');
+function setMenu(open) {
+  menu.classList.toggle('open', open);
+  menu.setAttribute('aria-hidden', String(!open));
+  burger.setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+burger.addEventListener('click', function () { setMenu(true); });
+menu.querySelector('.menu__close').addEventListener('click', function () { setMenu(false); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+</script>
+</body>
+</html>
