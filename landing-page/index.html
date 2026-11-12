@@ -54,7 +54,6 @@ input { font: inherit; }
 .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 24px; border-radius: 12px; background: var(--warm-yellow); color: var(--dark-blue); font-weight: 700; font-size: 16px; line-height: 18px; text-transform: uppercase; white-space: nowrap; transition: filter .15s, transform .1s; }
 .btn:hover { filter: brightness(.96); }
 .btn:active { transform: scale(.98); }
-.btn--white { background: var(--white); }
 .dotted { text-decoration: underline dotted; text-underline-position: from-font; text-decoration-skip-ink: none; }
 .icon-circle { flex: none; width: 48px; height: 48px; border-radius: 999px; background: var(--light-blue-bg); display: flex; align-items: center; justify-content: center; }
 .icon-circle img { width: 24px; height: 24px; }
@@ -71,7 +70,14 @@ input { font: inherit; }
 .lang span { color: var(--medium-gray); }
 
 /* ---------- header ---------- */
-.header { position: sticky; top: 0; z-index: 30; background: var(--medium-blue); }
+.header { position: sticky; top: 0; z-index: 30; background: var(--medium-blue); transition: background-color .2s; }
+.header .on-solid { display: none; }
+/* scrolled past the hero: white header (Figma 203:2541) */
+.header.is-solid { background: var(--white); }
+.header.is-solid .on-solid { display: block; }
+.header.is-solid .on-blue { display: none; }
+.header.is-solid .nav__links a, .header.is-solid .nav__login { color: var(--deep-black); }
+.header.is-solid .nav__book { color: var(--light-blue); } /* Figma 203:2574 */
 .nav { display: flex; align-items: center; gap: 8px; padding-top: 32px; padding-bottom: 32px; }
 .nav__left { display: flex; align-items: center; gap: 80px; height: 48px; }
 .nav__logo { width: 177px; height: 40px; display: flex; align-items: center; }
@@ -91,7 +97,11 @@ input { font: inherit; }
 .hero__title { display: flex; flex-direction: column; gap: 8px; }
 .hero__status-title { display: flex; flex-direction: column; gap: 24px; }
 .status { display: flex; gap: 8px; align-items: center; font-size: 14px; line-height: 16px; }
-.status img { width: 16px; height: 16px; }
+.status__dot { position: relative; width: 16px; height: 16px; flex: none; }
+.status__dot img { position: relative; width: 16px; height: 16px; }
+.status__dot::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #50c600; animation: status-pulse 2s ease-out infinite; }
+@keyframes status-pulse { 0% { transform: scale(.5); opacity: .7; } 100% { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .status__dot::before { animation: none; opacity: 0; } }
 .hero__sub { font-size: 16px; line-height: 21px; }
 .proof { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-weight: 500; font-size: 13px; line-height: 18px; white-space: nowrap; }
 .proof__review, .proof__rating { display: flex; gap: 4px; align-items: center; }
@@ -220,14 +230,6 @@ input { font: inherit; }
 .faq__a .txt { padding: 0 80px 24px 24px; font-size: 14px; line-height: 16px; color: var(--dark-gray); }
 .faq__a ul { padding-left: 20px; margin: 4px 0; }
 
-/* ---------- promo ---------- */
-.promo { padding-top: 40px; padding-bottom: 40px; }
-.promo__card { position: relative; height: 424px; border-radius: 24px; overflow: hidden; background: linear-gradient(44.16deg, #ffe5ae 3.86%, #ffd06d 38.82%, #ffb55d 102.41%); }
-.promo__icon { position: absolute; left: -113px; top: -128px; width: 531px; height: 531px; mix-blend-mode: overlay; transform: scaleX(-1); }
-.promo__title { position: absolute; left: 50%; top: 100px; width: 90%; transform: translateX(-50%); text-align: center; color: var(--deep-black); }
-.promo__title br.m { display: none; }
-.promo .btn { position: absolute; left: 50%; top: calc(50% + 84px); transform: translate(-50%, -50%); }
-.promo .btn:active { transform: translate(-50%, -50%) scale(.98); }
 
 /* ---------- app download ---------- */
 .app { padding-top: 40px; padding-bottom: 40px; display: flex; gap: 24px; align-items: flex-start; }
@@ -348,11 +350,6 @@ input { font: inherit; }
   .faq__item.open .faq__q { padding-bottom: 16px; }
   .faq__a .txt { padding: 0 48px 16px 16px; }
 
-  .promo__card { height: 321px; background: linear-gradient(68.85deg, #ffe5ae 3.86%, #ffd06d 38.82%, #ffb55d 102.41%); }
-  .promo__icon { width: 349px; height: 349px; left: -68px; top: auto; bottom: 73px; }
-  .promo__title { top: 32px; width: 311px; max-width: calc(100% - 32px); font-size: 40px; line-height: 40px; }
-  .promo__title br.m { display: inline; }
-  .promo .btn { top: calc(50% + 105.5px); }
 
   .app { flex-direction: column; gap: 32px; }
   .app__qr { width: 100%; align-items: flex-start; }
@@ -396,7 +393,7 @@ input { font: inherit; }
 <header class="header">
   <nav class="wrap nav" aria-label="Main">
     <div class="nav__left">
-      <a class="nav__logo" aria-label="Laundryheap home"><img src="assets/lh-logo-white.svg" alt="Laundryheap"></a>
+      <a class="nav__logo" aria-label="Laundryheap home"><img class="on-blue" src="assets/lh-logo-white.svg" alt="Laundryheap"><img class="on-solid" src="assets/lh-logo-dark.svg" alt="Laundryheap"></a>
       <div class="nav__links">
         <a>How it works</a>
         <a>Prices &amp; services</a>
@@ -411,7 +408,7 @@ input { font: inherit; }
     </div>
     <div class="nav__mobile-right">
       <a class="nav__book">Book</a>
-      <button class="nav__burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><img src="assets/hamburger-white.svg" alt=""></button>
+      <button class="nav__burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><img class="on-blue" src="assets/hamburger-white.svg" alt=""><img class="on-solid" src="assets/hamburger-dark.svg" alt=""></button>
     </div>
   </nav>
 </header>
@@ -422,7 +419,7 @@ input { font: inherit; }
       <div class="hero__left">
         <div class="hero__title">
           <div class="hero__status-title">
-            <div class="status"><img src="assets/status.svg" alt="">Pickup available in 45 minutes</div>
+            <div class="status"><span class="status__dot"><img src="assets/status.svg" alt=""></span>Pickup available in 45 minutes</div>
             <h1 class="h1">Live more, laundry less</h1>
           </div>
           <p class="hero__sub">You do the living, we'll do the laundry. We collect, clean &amp; return clothes in 24h.</p>
@@ -635,15 +632,6 @@ input { font: inherit; }
     </div>
   </section>
 
-  <section>
-    <div class="wrap promo">
-      <div class="promo__card">
-        <img class="promo__icon" src="assets/promotions.svg" alt="">
-        <h2 class="h1 promo__title">Get 15% off<br>on your<br class="m"> first order</h2>
-        <a class="btn btn--white">Schedule pickup</a>
-      </div>
-    </div>
-  </section>
 
   <section>
     <div class="wrap app">
@@ -753,6 +741,16 @@ document.querySelectorAll('.tab').forEach(function (tab) {
 
 // Mobile menu
 var menu = document.getElementById('menu');
+// header turns white once it has scrolled past the hero
+var header = document.querySelector('.header');
+var hero = document.querySelector('.hero');
+function updateHeader() {
+  header.classList.toggle('is-solid', hero.getBoundingClientRect().bottom <= header.offsetHeight);
+}
+addEventListener('scroll', updateHeader, { passive: true });
+addEventListener('resize', updateHeader);
+updateHeader();
+
 var burger = document.querySelector('.nav__burger');
 function setMenu(open) {
   menu.classList.toggle('open', open);
