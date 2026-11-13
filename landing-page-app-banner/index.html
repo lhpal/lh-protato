@@ -95,7 +95,8 @@ input { font: inherit; }
 @media (max-width: 899px) {
   .appbar { display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px 0 4px; background: var(--white); z-index: 40; }
   .appbar__close { flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--medium-gray); }
-  .appbar__icon { flex: none; width: 56px; height: 56px; border-radius: 12px; overflow: hidden; } /* Figma 205:2584 */
+  .appbar__icon { flex: none; width: 44px; height: 44px; border-radius: 10px; overflow: hidden; } /* Figma 205:2584, scaled down */
+  .appbar__icon img { width: 44px; height: 44px; }
   .appbar__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; margin-left: 4px; }
   .appbar__title { font-weight: 700; font-size: 14px; line-height: 16px; color: var(--deep-black); }
   .appbar__trust { display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 14px; color: var(--dark-gray); white-space: nowrap; }
@@ -103,8 +104,9 @@ input { font: inherit; }
   .appbar__cta { flex: none; padding: 8px 4px 8px 8px; font-weight: 700; font-size: 14px; line-height: 16px; color: var(--light-blue); }
 
   /* A: banner takes the header's place at the top */
-  body[data-variant="a"] .appbar { position: sticky; top: 0; box-shadow: 0 2px 12px rgba(28,32,38,.12); }
-  body[data-variant="a"]:not(.appbar-closed) .header { display: none; }
+  /* A: header shows first, then the banner slides down from the top edge and covers it */
+  body[data-variant="a"] .appbar { position: fixed; top: 0; left: 0; right: 0; transform: translateY(-100%); transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s; }
+  body[data-variant="a"].appbar-in .appbar { transform: none; box-shadow: 0 2px 12px rgba(28,32,38,.12); }
   /* B: banner fixed to the bottom of the screen */
   body[data-variant="b"] .appbar { position: fixed; left: 0; right: 0; bottom: 0; box-shadow: 0 -2px 12px rgba(28,32,38,.12); }
   body[data-variant="b"]:not(.appbar-closed) { padding-bottom: 72px; }
@@ -134,7 +136,7 @@ input { font: inherit; }
 .status__dot img { position: relative; width: 16px; height: 16px; }
 .status__dot::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #50c600; animation: status-pulse 2s ease-out infinite; }
 @keyframes status-pulse { 0% { transform: scale(.5); opacity: .7; } 100% { transform: scale(2.2); opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .status__dot::before { animation: none; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .status__dot::before { animation: none; opacity: 0; } .appbar { transition: none !important; } }
 .hero__sub { font-size: 16px; line-height: 21px; }
 .proof { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-weight: 500; font-size: 13px; line-height: 18px; white-space: nowrap; }
 .proof__review, .proof__rating { display: flex; gap: 4px; align-items: center; }
@@ -752,10 +754,15 @@ input { font: inherit; }
 (function () {
   var params = new URLSearchParams(location.search);
   if (params.get('switcher') === 'off') document.body.classList.add('no-switcher');
+  var BANNER_DELAY = 1000; // ms before the banner slides in (variant A)
+  var slideTimer;
   function setVariant(v) {
     if (!/^[abc]$/.test(v)) v = 'a';
+    clearTimeout(slideTimer);
+    document.body.classList.remove('appbar-in');
     document.body.dataset.variant = v;
     document.body.classList.remove('appbar-closed');
+    if (v === 'a') slideTimer = setTimeout(function () { document.body.classList.add('appbar-in'); }, BANNER_DELAY);
     document.querySelectorAll('.switcher button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.v === v)); });
     params.set('v', v);
     history.replaceState(null, '', '?' + params.toString());
@@ -765,8 +772,13 @@ input { font: inherit; }
     b.addEventListener('click', function () { setVariant(b.dataset.v); });
   });
   document.querySelector('.appbar__close').addEventListener('click', function () {
-    document.body.classList.add('appbar-closed');
-    if (window.header) updateHeader();
+    clearTimeout(slideTimer);
+    var slides = document.body.dataset.variant === 'a' && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.body.classList.remove('appbar-in'); // A: slides back up
+    slideTimer = setTimeout(function () {
+      document.body.classList.add('appbar-closed');
+      if (window.header) updateHeader();
+    }, slides ? 450 : 0);
   });
   setVariant(params.get('v') || 'a');
 })();
