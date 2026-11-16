@@ -6,6 +6,7 @@ Use `?v=a`, `?v=b` or `?v=c` to open a position directly, and add `&switcher=off
 
 ## 2026-11-16
 - Banner content updated from Figma (213:2246): title "World's leading laundry app", new close icon, smaller light blue logo tile, 4.7 rating with a half star, 400k+ happy customers, Install. Banner height is now 64px.
+- Title shortened to "World's leading laundry app". Banner side padding is 16px, matching the page, and the close icon is smaller (12px).
 
 ## 2026-11-13
 - A: the banner now slides down from the top edge after 1 second, over the header, so it reads as a layer on top. Closing slides it back up.
