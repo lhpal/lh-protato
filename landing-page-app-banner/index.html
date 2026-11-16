@@ -93,15 +93,21 @@ input { font: inherit; }
 /* ---------- app download banner (experiment, mobile only) ---------- */
 .appbar, .switcher { display: none; }
 @media (max-width: 899px) {
-  .appbar { display: flex; align-items: center; gap: 8px; height: 72px; padding: 0 16px 0 4px; background: var(--white); z-index: 40; }
-  .appbar__close { flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--medium-gray); }
-  .appbar__icon { flex: none; width: 44px; height: 44px; border-radius: 10px; overflow: hidden; } /* Figma 205:2584, scaled down */
-  .appbar__icon img { width: 44px; height: 44px; }
-  .appbar__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; margin-left: 4px; }
+  .appbar { display: flex; align-items: center; gap: 8px; height: 64px; padding: 8px 8px 8px 4px; background: var(--white); z-index: 40; } /* Figma 213:2246 */
+  .appbar__close { flex: none; width: 24px; height: 24px; margin-right: -4px; display: flex; align-items: center; justify-content: center; }
+  .appbar__close img { width: 16px; height: 16px; }
+  .appbar__icon { flex: none; width: 48px; height: 48px; padding: 6px; border-radius: 6px; background: var(--light-blue); overflow: hidden; }
+  .appbar__icon img { display: block; width: 36px; height: 36px; }
+  .appbar__text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
   .appbar__title { font-weight: 700; font-size: 14px; line-height: 16px; color: var(--deep-black); }
-  .appbar__trust { display: flex; align-items: center; gap: 4px; font-size: 12px; line-height: 14px; color: var(--dark-gray); white-space: nowrap; }
-  .appbar__trust .stars img { width: 10px; height: 10px; }
-  .appbar__cta { flex: none; padding: 8px 4px 8px 8px; font-weight: 700; font-size: 14px; line-height: 16px; color: var(--light-blue); }
+  .appbar__meta { display: flex; flex-wrap: wrap; gap: 2px; font-weight: 500; font-size: 10px; line-height: 12px; color: var(--dark-gray); white-space: nowrap; }
+  .appbar__rating { display: flex; gap: 4px; align-items: flex-start; }
+  .appbar__stars { display: flex; gap: 4px; align-items: center; }
+  .appbar__stars img, .appbar__star { width: 12px; height: 12px; }
+  .appbar__star { position: relative; }
+  .appbar__star img { position: absolute; left: 0; top: 0; }
+  .appbar__star span { position: absolute; left: 0; top: 0; width: 6px; height: 12px; overflow: hidden; }
+  .appbar__cta { flex: none; margin-right: -8px; padding: 8px; font-weight: 700; font-size: 14px; line-height: 16px; color: var(--light-blue); }
 
   /* A: banner takes the header's place at the top */
   /* A: header shows first, then the banner slides down from the top edge and covers it */
@@ -109,11 +115,11 @@ input { font: inherit; }
   body[data-variant="a"].appbar-in .appbar { transform: none; box-shadow: 0 2px 12px rgba(28,32,38,.12); }
   /* B: banner fixed to the bottom of the screen */
   body[data-variant="b"] .appbar { position: fixed; left: 0; right: 0; bottom: 0; box-shadow: 0 -2px 12px rgba(28,32,38,.12); }
-  body[data-variant="b"]:not(.appbar-closed) { padding-bottom: 72px; }
-  body[data-variant="b"]:not(.appbar-closed) .washy { bottom: 96px; }
+  body[data-variant="b"]:not(.appbar-closed) { padding-bottom: 64px; }
+  body[data-variant="b"]:not(.appbar-closed) .washy { bottom: 88px; }
   /* C: banner stacked above the header; both stay at the top while scrolling */
-  body[data-variant="c"] .appbar { position: sticky; top: 0; height: 72px; border-bottom: 1px solid #e9edf0; }
-  body[data-variant="c"]:not(.appbar-closed) .header { top: 72px; box-shadow: 0 2px 12px rgba(28,32,38,.12); }
+  body[data-variant="c"] .appbar { position: sticky; top: 0; height: 64px; border-bottom: 1px solid #e9edf0; }
+  body[data-variant="c"]:not(.appbar-closed) .header { top: 64px; box-shadow: 0 2px 12px rgba(28,32,38,.12); }
 
   body.appbar-closed .appbar { display: none; }
 
@@ -121,7 +127,7 @@ input { font: inherit; }
   .switcher { display: flex; gap: 4px; position: fixed; left: 16px; bottom: 28px; z-index: 45; padding: 4px; border-radius: 12px; background: rgba(28,32,38,.8); }
   .switcher button { width: 32px; height: 32px; border-radius: 8px; font-weight: 700; font-size: 14px; color: var(--white); }
   .switcher button[aria-pressed="true"] { background: var(--warm-yellow); color: var(--dark-blue); }
-  body[data-variant="b"]:not(.appbar-closed) .switcher { bottom: 100px; }
+  body[data-variant="b"]:not(.appbar-closed) .switcher { bottom: 92px; }
   body.no-switcher .switcher { display: none; }
 }
 
@@ -426,12 +432,17 @@ input { font: inherit; }
 <body data-variant="a">
 
 <div class="appbar" role="region" aria-label="Get the app">
-  <button class="appbar__close" type="button" aria-label="Close"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-  <div class="appbar__icon"><img src="assets/app-icon.svg" alt=""></div>
+  <button class="appbar__close" type="button" aria-label="Close"><img src="assets/banner-close.svg" alt=""></button>
+  <div class="appbar__icon"><img src="assets/banner-heart.svg" alt=""></div>
   <div class="appbar__text">
-    <div class="appbar__title">It’s just better on the app</div>
-    <div class="appbar__trust"><span class="stars"><img src="assets/star1.svg" alt=""><img src="assets/star2.svg" alt=""><img src="assets/star3.svg" alt=""><img src="assets/star4.svg" alt=""><img src="assets/star5.svg" alt=""></span>4.7 rating</div>
-    <div class="appbar__trust">400k+ happy customers</div>
+    <div class="appbar__title">The world’s leading laundry app</div>
+    <div class="appbar__meta">
+      <div class="appbar__rating">
+        <div class="appbar__stars"><img src="assets/banner-starfull.svg" alt=""><img src="assets/banner-starfull.svg" alt=""><img src="assets/banner-starfull.svg" alt=""><img src="assets/banner-starfull.svg" alt=""><span class="appbar__star"><img src="assets/banner-starempty.svg" alt=""><span><img src="assets/banner-starhalf.svg" alt=""></span></span></div>
+        <span>4.7 rating</span>
+      </div>
+      <span>400k+ happy customers</span>
+    </div>
   </div>
   <a class="appbar__cta">Install</a>
 </div>

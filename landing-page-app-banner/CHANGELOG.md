@@ -4,6 +4,9 @@ Experiment built on the landing page base (`landing-page-base-v1`). The banner o
 
 Use `?v=a`, `?v=b` or `?v=c` to open a position directly, and add `&switcher=off` to hide the A/B/C switch for testers.
 
+## 2026-11-16
+- Banner content updated from Figma (213:2246): title "The world's leading laundry app", new close icon, smaller light blue logo tile, 4.7 rating with a half star, 400k+ happy customers, Install. Banner height is now 64px.
+
 ## 2026-11-13
 - A: the banner now slides down from the top edge after 1 second, over the header, so it reads as a layer on top. Closing slides it back up.
 - App icon reduced to 44px.
